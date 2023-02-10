@@ -79,7 +79,7 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   late DatabaseReference db;
-  late final localNotification _notification;
+  // late final localNotification _notification;
 
   @override
   void initState() {
