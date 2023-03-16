@@ -102,16 +102,30 @@ class _CheckRecordingsWidgetState extends State<CheckRecordingsWidget> {
                     children: snapshot.data!.docs.map((document) {
                       var url = document['Video'].toString();
                       YoutubePlayerController _controller = YoutubePlayerController(
-                        initialVideoId: YoutubePlayer.convertUrlToId(url)!,
-                        flags: YoutubePlayerFlags(
-                          autoPlay: false,
-                          mute: true,
-                          disableDragSeek: false,
-                          loop: false,
-                          isLive: false,
-                          forceHD: false,
-                        ),
-                      );
+                          initialVideoId: YoutubePlayer.convertUrlToId(url)!,
+                          flags: const YoutubePlayerFlags(
+                              useHybridComposition: false,
+                              mute: false,
+                              autoPlay: false,
+                              disableDragSeek: true,
+                              loop: false,
+                              isLive: false,
+                              forceHD: false,
+                              enableCaption: false,
+                              showLiveFullscreenButton: false,
+                          ),
+                        );
+                      // YoutubePlayerController _controller = YoutubePlayerController(
+                      //   initialVideoId: YoutubePlayer.convertUrlToId(url)!,
+                      //   flags: YoutubePlayerFlags(
+                      //     autoPlay: false,
+                      //     mute: true,
+                      //     disableDragSeek: false,
+                      //     loop: false,
+                      //     isLive: false,
+                      //     forceHD: false,
+                      //   ),
+                      // );
                       return Center(
                           child: Column(
                               children: <Widget>[

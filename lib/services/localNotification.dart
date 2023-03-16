@@ -24,11 +24,15 @@ class localNotification {
 
   Future<NotificationDetails> _notificationDetails() async {
     const AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails('pushnotification', 'channel_name',
-        channelDescription: 'description',
-        importance: Importance.max,
-        priority: Priority.high,
-        playSound: true);
+    AndroidNotificationDetails(
+      'pushnotification',
+      'pushnotification',
+      channelDescription: 'description',
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+
+    );
 
     return const NotificationDetails(
       android: androidNotificationDetails,

@@ -88,6 +88,7 @@ class _UserSignupWidgetState extends State<UserSignupWidget> {
   final firestore = FirebaseFirestore.instance;
   String initialCountry = 'KW';
   PhoneNumber number = PhoneNumber(isoCode: 'KW');
+  bool _checkbox = false;
 
   validateMobile(String value) {
     String patttern = r'(^(?:[+]965)?[0-9]{8}$)';
@@ -349,7 +350,7 @@ class _UserSignupWidgetState extends State<UserSignupWidget> {
                               return 'This Field is Required';
                             }
                             else if(value != null && (value.length < 8 || value.length > 8)){
-                              return 'Phone Number must have 8 Numbers';
+                              return 'Phone Number must Have 8 Numbers';
                             }
                             else if(value != null && !isNumeric(value)){
                               return 'Phone Number must Contain Numbers Only';
@@ -435,13 +436,14 @@ class _UserSignupWidgetState extends State<UserSignupWidget> {
                                       'Email': emailController.text,
                                       'Phone Number': phoneController.text,
                                     };
-                                    db.push().set(users);
-                                    print(fNameController.text);
-                                    print(lNameController.text);
-                                    print(emailController.text);
-                                    print(civilIDController.text);
-
-                                    signUp(users);
+                                    termsAndConditions(users);
+                                    // db.push().set(users);
+                                    // print(fNameController.text);
+                                    // print(lNameController.text);
+                                    // print(emailController.text);
+                                    // print(civilIDController.text);
+                                    //
+                                    // signUp(users);
                                   }
 
                                   else{
@@ -596,5 +598,149 @@ class _UserSignupWidgetState extends State<UserSignupWidget> {
     setState(() {
       this.number = number;
     });
+  }
+
+  void termsAndConditions(Map<String, String> users){
+    showDialog(
+        context: this.context,
+        builder: (context) {
+      return StatefulBuilder(builder: (context, setState) {
+        return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Container(
+                height: 1000,
+                // width: 1000,
+                child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ListView(
+                        children: <Widget>[
+                          Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.all(10),
+                          ),
+                          Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.fromLTRB(5, 0, 10, 0),
+                              child: const Text(
+                                'Terms and Conditions',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              )),
+
+                          Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.fromLTRB(5, 15, 0, 0),
+                            child: Text(
+                              "Emergency calls are for emergency situations only. Misusing emergency calls, including making prank or false calls, is strictly prohibited.\n"
+                                  "\nMisusing emergency calls can result in serious consequences, including fines, legal action, and potential endangerment of lives due to delayed response times.\n"
+                                  "\nAny person found guilty of misusing emergency calls may be subject to prosecution under applicable laws and regulations.\n"
+                                  "\nExamples of misusing emergency calls include, but are not limited to: making prank calls, making false reports of emergencies, and intentionally abusing the emergency services system.\n"
+                                  "\nThe use of emergency services is reserved for those with genuine emergencies, such as medical emergencies, fire emergencies, and instances of criminal activity or public safety threats.\n"
+                                  "\nIn cases where a person misuses emergency calls, emergency services personnel reserve the right to refuse service, or to take necessary action to address the situation.\n"
+                                  "\nAny false or misleading information provided to emergency services may result in delayed response times, or in extreme cases, could result in serious harm or even loss of life.\n"
+                                  "\nIndividuals who require emergency services are advised to provide accurate and complete information, and to follow instructions given by emergency services personnel.\n"
+                                  "\nEmergency services are provided as a public service, and as such, misuse of this service can negatively impact other members of the community who may be in genuine need of assistance.\n"
+                                  "\nBy misusing emergency calls, individuals acknowledge that they are violating the terms and conditions of use, and that they may be held liable for any resulting harm or damage.\n",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.normal),
+                            ),
+                          ),
+
+                          Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.fromLTRB(5, 5, 0, 8),
+                            child:
+                            Text(
+                              "By making an emergency call, individuals acknowledge that they have read and understood these terms and conditions, and agree to abide by them. Failure to comply with these terms and conditions may result in consequences as outlined above.\n"
+                                  "\nBy accepting these terms and conditions, individuals agree to use emergency services responsibly and only in cases of genuine emergency. Any misuse of the emergency services system may result in legal action and potential harm to others.",
+                              style: TextStyle(fontSize: 15,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.red),
+                            ),
+                          ),
+
+                          Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.fromLTRB(5, 7, 10, 0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Checkbox(
+                                      value: _checkbox,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _checkbox = !_checkbox;
+                                        });
+                                      },
+                                    ),
+                           Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                          'I agree to the terms and conditions.',
+                                          style: TextStyle(fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                      // textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          Row(
+                            children: [
+                              Padding(padding: const EdgeInsets.fromLTRB(
+                                  70, 15, 10, 0),
+                                  child: AbsorbPointer(
+                                    absorbing: !_checkbox,
+                                    child: ElevatedButton(
+                                      child: const Text(
+                                        'Done', style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+
+                                      ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        setState(() {});
+                                        db.push().set(users);
+                                        print(fNameController.text);
+                                        print(lNameController.text);
+                                        print(emailController.text);
+                                        print(civilIDController.text);
+
+                                        signUp(users);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        minimumSize: Size(170, 45),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 50),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              20),
+                                        ),
+                                        primary: _checkbox ? const Color(
+                                            0xff02165c) : Colors.grey,
+                                      ),
+                                    ),
+                                  )
+                              ),
+                            ],
+                          )
+                        ]
+                    )
+                )
+            )
+        );
+      }
+      );
+        }
+    );
   }
 }

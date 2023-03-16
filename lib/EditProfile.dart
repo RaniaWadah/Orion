@@ -1033,7 +1033,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                                                     ),
                                                                     actions: <
                                                                         Widget>[
-                                                                      FlatButton(
+                                                                      TextButton(
                                                                         child: Text(
                                                                             'Cancel'),
                                                                         onPressed: () {
@@ -1043,7 +1043,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                                                               .pop();
                                                                         },
                                                                       ),
-                                                                      FlatButton(
+                                                                      TextButton(
                                                                         child: Text(
                                                                             'Done'),
                                                                         onPressed: () async {
@@ -1448,7 +1448,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                 return 'This Field is Required';
               }
               else if(value != null && (value.length < 8 || value.length > 8)){
-                return 'Phone Number must have 8 Numbers';
+                return 'Phone Number must Have 8 Numbers';
               }
               else if(value != null && !isNumeric(value)){
                 return 'Phone Number must Contain Numbers Only';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:untitled2/UserLogin.dart';
 
 
 class UserForgotPassWidget extends StatefulWidget {
@@ -125,7 +126,6 @@ class _UserForgotPassWidgetState extends State<UserForgotPassWidget> {
                                 }
                                 else{
                                   verifyEmail();
-
                                 }
                               },
                               child: const Text('Reset Password', style: TextStyle(
