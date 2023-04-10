@@ -10,11 +10,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled2/CheckRecordings.dart';
 import 'package:untitled2/GiveAlarm.dart';
-import 'package:untitled2/GiveAlarmDialog.dart';
 import 'package:untitled2/ProvideSafetyMessage.dart';
-import 'package:untitled2/services/NotificationService.dart';
-// import 'package:untitled2/ViewNotifications.dart';
-import 'package:untitled2/services/localNotification.dart';
+import 'package:untitled2/StartRecording.dart';
+import 'package:untitled2/ViewNotifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 
@@ -440,7 +438,13 @@ class _GovHomeWidgetState extends State<GovHomeWidget> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(75, 20, 10, 10),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => StartRecording(),
+                                ));
+                          },
                           child: const Text('Record a Video', style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -467,8 +471,8 @@ class _GovHomeWidgetState extends State<GovHomeWidget> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (
-                                        context) => const CheckRecordings()));
+                                  builder: (context) => CheckRecordings(),
+                                ));
                           },
                           child: const Text(
                             'Check a Recording', style: TextStyle(
@@ -493,13 +497,189 @@ class _GovHomeWidgetState extends State<GovHomeWidget> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(90, 10, 10, 10),
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            // final govData = await FirebaseFirestore.instance.collection('government').
+                            // doc(FirebaseAuth.instance.currentUser!.uid).get();
+                            //
+                            // String govArea = govData.data()!['Area'];
+                            // String govToken = govData.data()!['Token'];
+                            // QuerySnapshot notiTokens = await FirebaseFirestore.instance.collection('userNotifications')
+                            //     .where('Area', isEqualTo: govArea).get();
+                            //
+                            // List<DocumentSnapshot> notiList = notiTokens.docs;
+                            // List<String> notiTokenList = [];
+                            //
+                            // notiList.forEach((doc) async {
+                            //   dynamic data = doc.data();
+                            //   String? notiToken = data['Sender Device Token']?.toString();
+                            //   if (notiToken != null) {
+                            //     if(notiToken != govToken){
+                            //       notiTokenList.add(notiToken);
+                            //     }
+                            //   }
+                            // });
+                            // print(notiTokenList.toString());
+                            //
+                            //
+                            //
+
+
+                            // QuerySnapshot govAddress = await FirebaseFirestore
+                            //     .instance.collection(
+                            //     'government').where('Area', isNotEqualTo: null).get();
+                            //
+                            // List<DocumentSnapshot> govList = govAddress.docs;
+                            // List<String> govAddressList = [];
+                            //
+                            // govList.forEach((doc) async{
+                            //   dynamic data = doc.data();
+                            //   String? govArea = data['Area']?.toString();
+                            //   if (govArea != null) {
+                            //     govAddressList.add(govArea);
+                            //
+                            //     QuerySnapshot notiAddress = await FirebaseFirestore
+                            //         .instance.collection(
+                            //         'Notifications').where('Area', isEqualTo: govArea).get();
+                            //     List<DocumentSnapshot> notiList = notiAddress.docs;
+                            //     List<String> notiAddressList = [];
+                            //
+                            //     notiList.forEach((doc) async{
+                            //       dynamic data = doc.data();
+                            //       String? notiArea = data['Area']?.toString();
+                            //       if (notiArea != null) {
+                            //         notiAddressList.add(notiArea);
+                            //         print(notiAddressList.toString());
+                            //     //     QuerySnapshot userAddress = await FirebaseFirestore
+                            //     //         .instance.collection(
+                            //     //         'user').where('Area', isEqualTo: notiArea).get();
+                            //     //     List<DocumentSnapshot> usersList = userAddress.docs;
+                            //     //     List<String> userAreaList = [];
+                            //     //
+                            //     //     usersList.forEach((doc) async{
+                            //     //       dynamic data = doc.data();
+                            //     //       String? userArea = data['Area']
+                            //     //           ?.toString();
+                            //     //       if (userArea != null) {
+                            //     //         userAreaList.add(userArea);
+                            //     //         QuerySnapshot snapshot = await FirebaseFirestore
+                            //     //             .instance.collection(
+                            //     //             'user').where('Area', isEqualTo: notiArea).get();
+                            //     //         List<DocumentSnapshot> userList = snapshot.docs;
+                            //     //         List<String> tokenList = [];
+                            //     //         userList.forEach((doc) async{
+                            //     //           dynamic data = doc.data();
+                            //     //           String? token = data['Token']
+                            //     //               ?.toString();
+                            //     //           if (token != null) {
+                            //     //             tokenList.add(token);
+                            //     //             print(tokenList.toString());
+                            //     //             // final userSnapshot = await FirebaseFirestore
+                            //     //             //     .instance.collection('user').
+                            //     //             // doc(FirebaseAuth.instance
+                            //     //             //     .currentUser!.uid).get();
+                            //     //
+                            //     //             final body = "Alarm System Turned On";
+                            //     //             final title = "Give Alarm";
+                            //     //             print(body);
+                            //     //             Map<String,
+                            //     //                 dynamic> Notifications = {
+                            //     //               'Title': title,
+                            //     //               'Description': body,
+                            //     //               'Date and Time': DateTime.now()
+                            //     //                   .toString(),
+                            //     //               // 'Location': userSnapshot
+                            //     //               //     .data()!['Location'],
+                            //     //             };
+                            //     //             db.push().set(Notifications);
+                            //     //
+                            //     //             CollectionReference userRef = FirebaseFirestore
+                            //     //                 .instance.collection(
+                            //     //                 'Notifications');
+                            //     //             userRef.doc()
+                            //     //                 .set({
+                            //     //               'Title': title,
+                            //     //               'Description': body,
+                            //     //               'Date and Time': DateTime.now()
+                            //     //                   .toString(),
+                            //     //               // 'Location': userSnapshot
+                            //     //               //     .data()!['Location'],
+                            //     //             })
+                            //     //                 .then((value) =>
+                            //     //                 print("Notification Added"))
+                            //     //                 .catchError((error) =>
+                            //     //                 print(
+                            //     //                     "Failed to add notification: $error"));
+                            //     //
+                            //     //             NotificationService().sendPushMsg(tokenList, title, body);
+                            //     //           }
+                            //     //         });
+                            //     //       }
+                            //     //     });
+                            //       }
+                            //     });
+                            //   }
+                            // });
+                            //
+
+
+                            // QuerySnapshot snapshot = await FirebaseFirestore
+                            //     .instance.collection(
+                            //     'user').where('Token', isNotEqualTo: null).get();
+                            // List<DocumentSnapshot> userList = snapshot.docs;
+                            // List<String> tokenList = [];
+                            //
+                            // userList.forEach((doc) {
+                            //   dynamic data = doc.data();
+                            //   String? token = data['Token']
+                            //       ?.toString();
+                            //   if (token != null) {
+                            //     tokenList.add(token);
+                            //   }
+                            // });
+
+                            // print(tokenList.toString());
+                            //
+                            // Random random = Random();
+                            // int randomIndex = random.nextInt(
+                            //     tokenList.length);
+                            // String randomToken = tokenList[randomIndex];
+                            // print(tokenList[0]);
+                            //sendPushMessage(token, body, title);
+
+                            // NotificationService.sendPushMessage(token, body, title);
+
+                            // Position position = await _getGeoLocationPosition();
+                            // location = 'Lat: ${position.latitude} , Long: ${position.longitude}';
+                            //
+                            // String address = await GetAddressFromLatLong(position);
+                            //
+                            // String area = await GetAreaFromLatLong(position);
+
+                            // showDialog(
+                            //     context: context,
+                            //     builder: (context) {
+                            //       return AlertDialog(
+                            //         content: Text(
+                            //             'Your request has been successfully sent'),
+                            //       );
+                            //     }
+                            // );
+
+                            // final giveAlarmTime = DateTime.now()
+                            //     .add(
+                            //     const Duration(minutes: 1));
+                            // (await SharedPreferences
+                            //     .getInstance()).setInt(
+                            //     'give_alarm_time', giveAlarmTime
+                            //     .millisecondsSinceEpoch);
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (
-                                        context) => const GiveAlarmDialog()));
+                                  builder: (context) => GiveAlarm(),
+                                ));
                           },
+
                           child: const Text('Give Alarm', style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -526,8 +706,8 @@ class _GovHomeWidgetState extends State<GovHomeWidget> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (
-                                        context) => const ProvideSafetyMessage()));
+                                  builder: (context) => SpeakerPage(),
+                                ));
                           },
                           child: const Text('Provide Message', style: TextStyle(
                             color: Colors.white,
@@ -575,10 +755,11 @@ class _GovHomeWidgetState extends State<GovHomeWidget> {
                         padding: const EdgeInsets.fromLTRB(60, 10, 10, 10),
                         child: ElevatedButton(
                           onPressed: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => const ViewNotifications()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ViewNotifications(),
+                                ));
                           },
                           child: const Text(
                             'View Notifications', style: TextStyle(
@@ -669,7 +850,7 @@ class _GovHomeWidgetState extends State<GovHomeWidget> {
       Placemark place = placemarks[0];
       Address =
       'Street: ${place.street}, Area: ${place.locality}, Governorate: ${place
-          .administrativeArea} Country: ${place.country}';
+          .administrativeArea}, Country: ${place.country}';
       return Address;
     }
 

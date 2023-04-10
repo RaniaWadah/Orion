@@ -75,6 +75,21 @@ dependencies:
   awesome_icons: ^1.1.0
   image: ^4.0.15
   fluttertoast: ^8.2.1
+  speech_to_text: ^6.1.1
+  avatar_glow: ^2.0.2
+  flutter_speech: ^2.0.0
+  highlight_text: ^1.6.0
+  flutter_tts: ^3.6.3
+  flutter_sound: ^9.2.13
+  camera: ^0.10.3+2
+  flutter_image: ^4.1.5
+  flutter_countdown_timer: ^4.1.0
+  timer_count_down: ^2.2.2
+  flutter_bloc: ^8.1.2
+  flutter_blue_plus: ^1.4.0
+  #  chaquopy: ^0.0.19
+  #  google_speech: ^2.1.2
+#  sound_stream: ^0.3.0
 #  native_notify: ^0.0.17
 
 #  multiple_images_picker: ^1.0.1

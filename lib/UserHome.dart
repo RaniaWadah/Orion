@@ -612,7 +612,7 @@ class _UserHomeWidgetState extends State<UserHomeWidget> {
     List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
     print(placemarks);
     Placemark place = placemarks[0];
-    Address = 'Street: ${place.street}, Area: ${place.locality}, Governorate: ${place.administrativeArea} Country: ${place.country}';
+    Address = 'Street: ${place.street}, Area: ${place.locality}, Governorate: ${place.administrativeArea}, Country: ${place.country}';
     return Address;
   }
 

@@ -536,87 +536,6 @@ class _GetHelpWidgetState extends State<GetHelpWidget> {
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(5),
                 ),
-                // ValueListenableBuilder(
-                //     valueListenable: _getHelpState,
-                //     builder: (context, value, child) {
-                //       if(value != true){
-                //         return Container(
-                //           alignment: Alignment.center,
-                //           padding: const EdgeInsets.all(10),
-                //           child: Row(
-                //             mainAxisAlignment: MainAxisAlignment.center,
-                //             children: [
-                //             Column(
-                //             mainAxisAlignment: MainAxisAlignment.center,
-                //             children: [
-                //               Container(
-                //                 padding: EdgeInsets.all(8),
-                //                 decoration: BoxDecoration(
-                //                     color: Colors.white, borderRadius: BorderRadius.circular(20)),
-                //                 child: Text(
-                //                     '${_remainingDuration.inMinutes.toString().padLeft(2, '0')}',
-                //                   style: TextStyle(
-                //                       fontWeight: FontWeight.bold,
-                //                       color: const Color(0xff02165c),
-                //                       fontSize: 50),
-                //                 ),
-                //               ),
-                //               SizedBox(
-                //                 height: 16,
-                //               ),
-                //               Text('Minutes', style: TextStyle(
-                //                 color: Colors.black45,
-                //                 fontWeight: FontWeight.bold,
-                //                 fontSize: 16,
-                //               )
-                //               ),
-                //             ],
-                //           ),
-                //               SizedBox(
-                //                 width: 8,
-                //               ),
-                //               Column(
-                //                 mainAxisAlignment: MainAxisAlignment.center,
-                //                 children: [
-                //                   Container(
-                //                     padding: EdgeInsets.all(8),
-                //                     decoration: BoxDecoration(
-                //                         color: Colors.white, borderRadius: BorderRadius.circular(20)),
-                //                     child: Text(
-                //                       '${(_remainingDuration.inSeconds % 60).toString().padLeft(2, '0')}',
-                //                       style: TextStyle(
-                //                           fontWeight: FontWeight.bold,
-                //                           color: const Color(0xff02165c),
-                //                           fontSize: 50),
-                //                     ),
-                //                   ),
-                //                   SizedBox(
-                //                     height: 16,
-                //                   ),
-                //                   Text('Seconds', style: TextStyle(
-                //                     color: Colors.black45,
-                //                     fontWeight: FontWeight.bold,
-                //                     fontSize: 16,
-                //                   )),
-                //                 ],
-                //               ),
-                //               // Text('${_remainingDuration.inMinutes}:${(_remainingDuration.inSeconds % 60).toString().padLeft(2, '0')}',
-                //               //   style:
-                //               //   TextStyle(
-                //               //     fontSize: 50,
-                //               //     fontWeight: FontWeight.bold,
-                //               //     color: const Color(0xff02165c),
-                //               //   ),
-                //               // ),
-                //             ],
-                //           ),
-                //         );
-                //       }
-                //       else{
-                //         return Container();
-                //       }
-                //     }
-                // ),
                 Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.fromLTRB(10, 40, 10, 25),
@@ -761,28 +680,9 @@ class _GetHelpWidgetState extends State<GetHelpWidget> {
 
                                             print(tokenList.toString());
 
-
-                                            // Random random = Random();
-                                            // int randomIndex = random.nextInt(tokenList.length);
-                                            // String randomToken = tokenList[randomIndex];
-                                            // print(tokenList[0]);
-
-
-                                            // String token = govSnapshot['Token'];
-                                            // print(token);
                                             final body = "Get Help Request.";
                                             final title = "Get Help";
                                             print(body);
-                                            //sendPushMessage(token, body, title);
-
-                                            // NotificationService.sendPushMessage(token, body, title);
-
-                                            // Position position = await _getGeoLocationPosition();
-                                            // location = 'Lat: ${position.latitude} , Long: ${position.longitude}';
-                                            //
-                                            // String address = await GetAddressFromLatLong(position);
-                                            //
-                                            // String area = await GetAreaFromLatLong(position);
 
                                             Map<String,
                                                 dynamic> Notifications = {
@@ -822,14 +722,6 @@ class _GetHelpWidgetState extends State<GetHelpWidget> {
                                                 .catchError((error) =>
                                                 print(
                                                     "Failed to add notification: $error"));
-                                            // print(await getToken());
-                                            // String? token = getTokenAndPrint().toString();
-                                            // print(token);
-                                            // await getToken();
-                                            // print(token);
-                                            // print(await _getSavedToken());
-                                            // print(await getVal());
-                                            // await sendPushMsg(tokenList, title, body);
                                             await sendPushMsg(
                                                 tokenList, title, body);
 
@@ -872,12 +764,6 @@ class _GetHelpWidgetState extends State<GetHelpWidget> {
                                                   ),
                                                 );
                                               }),
-                                          // child: const Text('Send', style: TextStyle(
-                                          //   color: Colors.white,
-                                          //   fontSize: 18,
-                                          //   fontWeight: FontWeight.bold,
-                                          // ),
-                                          // ),
                                           style: ElevatedButton.styleFrom(
                                               primary: value == true
                                                   ? const Color(

@@ -136,28 +136,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
       print('User declined or has not accepted permission.');
     }
   }
-  // void getToken() async{
-  //   await _firebaseMessaging.getToken().then(
-  //           (token) {
-  //         setState(() {
-  //           mtoken = token;
-  //           // print(mtoken);
-  //         });
-  //         saveToken(token!);
-  //       }
-  //   );
-  // }
-  //
-  // void saveToken(String? token) async{
-  //   await FirebaseFirestore.instance.collection('government').
-  //   doc(FirebaseAuth.instance.currentUser!.uid).set(
-  //       {'Token' : token}, SetOptions(merge: true)
-  //   );
-  //   await FirebaseFirestore.instance.collection('user').
-  //   doc(FirebaseAuth.instance.currentUser!.uid).set(
-  //       {'Token' : token}, SetOptions(merge: true)
-  //   );
-  // }
 
   Future<void> messageHandler() async {
     await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
@@ -171,92 +149,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
     // });
 
   }
-
-  // String constructFCMPayload(String token) {
-  //   return jsonEncode({
-  //     'to': token,
-  //     'data': {
-  //       'via': 'FlutterFire Cloud Messaging!!!',
-  //     },
-  //     'notification': {
-  //       'title': 'Your item is added successfully !',
-  //       'body': 'Please subscribe, like and share this tutorial !',
-  //     },
-  //   });
-  // }
-  //
-  // Future<void> sendPushMsg(List<String> token, String title, String body) async {
-  //   bool isEmpty = true;
-  //   final userSnapshot = await FirebaseFirestore.instance.collection('user').
-  //   doc(FirebaseAuth.instance.currentUser!.uid).get();
-  //   print(userSnapshot.data()!['Area'].toString());
-  //   if(imageList!.isNotEmpty){
-  //     isEmpty = false;
-  //   }
-  //   if(isEmpty) {
-  //     try {
-  //       String serverKey = "AAAA5mkL_iM:APA91bGr7zS4Zx5IwwGrK0H9otabN8EKJr-pHxmgq2_ptDN1uINDTsOxsQDLSeZURLOFYu8fpAZy47TfKG5Rp-BGvbzXkC-jStzwmy45DRhf4dQdfIRAru--jcWL5kcTMjvvOOlul_pg";
-  //       await http.post(
-  //         Uri.parse('https://fcm.googleapis.com/fcm/send'),
-  //         headers: <String, String>{
-  //           'Content-Type': 'application/json; charset=UTF-8',
-  //           'Authorization': 'key=$serverKey'
-  //         },
-  //         body: jsonEncode({
-  //           "registration_ids": token,
-  //           'data': {
-  //             "click_action": "FLUTTER_NOTIFICATION_CLICK",
-  //             'via': 'FlutterFire Cloud Messaging!!!',
-  //             "image": "gs://csc350orion.appspot.com/files/eb579226-4e07-4fa4-9117-4330b108f1ab7432483971391303323.jpg/file",
-  //           },
-  //           'notification': {
-  //             'title': title,
-  //             'body': body + "\nSent from "+ userSnapshot.data()!['Area'].toString(),
-  //             'sound': 'default',
-  //             'alert': 'new',
-  //             'image': userSnapshot.data()!['imageUrl'],
-  //             // 'image': 'https://s3.us-east-2.amazonaws.com/crypticpoint.projects.upload/convergein/users/162738162682638205.jpg',
-  //           },
-  //         }),
-  //       );
-  //       print('FCM request for device sent!');
-  //     } catch (e) {
-  //       print(e);
-  //     }
-  //   }
-  //     else if(!isEmpty){
-  //     try {
-  //       String serverKey = "AAAA5mkL_iM:APA91bGr7zS4Zx5IwwGrK0H9otabN8EKJr-pHxmgq2_ptDN1uINDTsOxsQDLSeZURLOFYu8fpAZy47TfKG5Rp-BGvbzXkC-jStzwmy45DRhf4dQdfIRAru--jcWL5kcTMjvvOOlul_pg";
-  //       await http.post(
-  //         Uri.parse('https://fcm.googleapis.com/fcm/send'),
-  //         headers: <String, String>{
-  //           'Content-Type': 'application/json; charset=UTF-8',
-  //           'Authorization': 'key=$serverKey'
-  //         },
-  //         body: jsonEncode({
-  //           "registration_ids": token,
-  //           'data': {
-  //             "click_action": "FLUTTER_NOTIFICATION_CLICK",
-  //             'via': 'FlutterFire Cloud Messaging!!!',
-  //             "image": "gs://csc350orion.appspot.com/files/eb579226-4e07-4fa4-9117-4330b108f1ab7432483971391303323.jpg/file",
-  //           },
-  //           'notification': {
-  //             'title': title,
-  //             'body': body + '\nImage\nSent from '+ userSnapshot.data()!['Area'].toString(),
-  //             'sound': 'default',
-  //             'alert': 'new',
-  //             'image': userSnapshot.data()!['imageUrl'],
-  //             // 'image': 'https://s3.us-east-2.amazonaws.com/crypticpoint.projects.upload/convergein/users/162738162682638205.jpg',
-  //           },
-  //         }),
-  //       );
-  //       // styleInformation: bigTextStyleInformation;
-  //       print('FCM request for device sent!');
-  //     } catch (e) {
-  //       print(e);
-  //     }
-  //   }
-  // }
 
   Future<void> sendPushMsgPlb(List<String> token, String title, String body, List<XFile>? imageList) async {
     bool isEmpty = true;
@@ -437,19 +329,12 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
     super.initState();
     db = FirebaseDatabase.instance.ref().child('userNotifications');
     controller = TextEditingController();
-    // requestPermission();
-    // loadFCM();
-    // listenFCM();
-    // getToken();
     _init();
-    // initInfo();
     controller.addListener(() {
       final isButtonActive = controller.text.isNotEmpty;
       setState(() =>
       this.isButtonActive = isButtonActive);
     });
-    // NotificationService.initNotification(_notificationsPlugin, channel);
-
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       if (message != null) {
         print("New Notification");
@@ -835,10 +720,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-
-                      // selectedImagePath == "" ? Text("")
-                      //   :
-                      // Image.file(File(selectedImagePath), height: 200, width: 200, fit: BoxFit.fill),
                           imageList!.isEmpty ? Container()
                               : Container(
                               height: MediaQuery.of(context).size.height *0.28,
@@ -977,23 +858,21 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
                                   else if(otherController.text.isEmpty){
                                     title = cat + " - "+ selectedValue!;
                                   }
+                                  String? t;
+                                  if(isValueEmpty){
+                                    t = otherController.text.toString();
+                                  }
+                                  else if(otherController.text.isEmpty){
+                                    t = selectedValue!;
+                                  }
 
                                   String body = descriptionController.text.toString();
 
-                                  // NotificationService.sendPushMessage(token, body, title!);
-
-                                  // Position position = await _getGeoLocationPosition();
-                                  // location = 'Lat: ${position.latitude} , Long: ${position.longitude}';
-                                  //
-                                  // String address = await GetAddressFromLatLong(position);
-                                  //
-                                  // String area = await GetAreaFromLatLong(position);
-
                                   Map<String, dynamic> Notifications = {
                                     'Title': 'Report a Problem',
-                                    'Problem Category': title,
-                                    'Problem Description': body,
-                                    'Image': pathList.toString(),
+                                    'Category': t,
+                                    'Description': body,
+                                    'Image': pathList,
                                     'Sender Civil ID': userSnapshot.data()!['Civil ID'],
                                     'Sender Device Token': userSnapshot.data()!['Token'],
                                     'Date and Time': DateTime.now().toString(),
@@ -1008,9 +887,9 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
                                   userRef.doc()
                                       .set({
                                     'Title': 'Report a Problem',
-                                    'Problem Category': title,
-                                    'Problem Description': body,
-                                    'Image': pathList.toString(),
+                                    'Category': t,
+                                    'Description': body,
+                                    'Image': pathList,
                                     'Sender Civil ID': userSnapshot.data()!['Civil ID'],
                                     'Sender Device Token': userSnapshot.data()!['Token'],
                                     'Date and Time': DateTime.now().toString(),
@@ -1112,52 +991,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
       ),
     );
   }
-
-  // String location = 'Null, Press Button';
-  // String Address = 'search';
-  // String Area = 'search';
-  // Future<Position> _getGeoLocationPosition() async {
-  //   bool serviceEnabled;
-  //   LocationPermission permission;
-  //   // Test if location services are enabled.
-  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if (!serviceEnabled) {
-  //     await Geolocator.openLocationSettings();
-  //     return Future.error('Location services are disabled.');
-  //   }
-  //   permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //     if (permission == LocationPermission.denied) {
-  //       return Future.error('Location permissions are denied');
-  //     }
-  //   }
-  //   if (permission == LocationPermission.deniedForever) {
-  //     return Future.error(
-  //         'Location permissions are permanently denied, we cannot request permissions.');
-  //   }
-  //   return await Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.best,
-  //       forceAndroidLocationManager: true);
-  // }
-  //
-  // Future<String> GetAddressFromLatLong(Position position) async {
-  //   List<Placemark> placemarks = await placemarkFromCoordinates(
-  //       position.latitude, position.longitude);
-  //   print(placemarks);
-  //   Placemark place = placemarks[0];
-  //   Address = 'Street: ${place.street}, Area: ${place.locality}, Governorate: ${place
-  //       .administrativeArea} Country: ${place.country}';
-  //   return Address;
-  // }
-  // Future<String> GetAreaFromLatLong(Position position)async {
-  //   List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
-  //   print(placemarks);
-  //   Placemark place = placemarks[0];
-  //   Area = 'Area: ${place.locality}';
-  //   return Area;
-  // }
-
 
   Future selectImage(){
     return showDialog(
@@ -1349,15 +1182,7 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
 
         if(permissionStatus.isGranted){
           XFile? file = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 100);
-          // var img = File(file!.path);
           if(file != null){
-            // var snapshot = await FirebaseStorage.instance.ref()
-            //     .child('images/imageName')
-            //     .putFile(img);
-            // var downloadUrl = await snapshot.ref.getDownloadURL();
-            // setState(() {
-            //   imageUrl = downloadUrl;
-            // });
             photo = File(file.path);
             uploadFile();
 
@@ -1378,15 +1203,7 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
 
         if(permissionStatus.isGranted){
           XFile? file = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 100);
-          // var img = File(file!.path);
           if(file != null){
-            // var snapshot = await FirebaseStorage.instance.ref()
-            //     .child('images/imageName')
-            //     .putFile(img);
-            // var downloadUrl = await snapshot.ref.getDownloadURL();
-            // setState(() {
-            //   imageUrl = downloadUrl;
-            // });
             photo = File(file.path);
             uploadFile();
 
@@ -1415,18 +1232,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
 
     });
   }
-
-  // Future uploadFile() async {
-  //   if (photo == null) return;
-  //   final fileName = Path.basename(photo!.path);
-  //   final destination = 'files/$fileName';
-  //   try {
-  //     final ref = FirebaseStorage.instance.ref(destination).child('file/');
-  //     await ref.putFile(photo!);
-  //   } catch (e) {
-  //     print('error occured');
-  //   }
-  // }
 
   Future<void> uploadFile() async {
     if (photo == null) return;
