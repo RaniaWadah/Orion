@@ -342,104 +342,7 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
         // Navigator.of(context).pushNamed(routeFromMessage);
       }
     });
-    //   if(message != null){
-    //     final routeFromMessage = message.data["route"];
-    //     Navigator.of(context).pushNamed(routeFromMessage);
-    //   }
-    // });
-
-    // FirebaseMessaging.onMessage.listen((message) {
-    //   RemoteNotification? notification = message.notification;
-    //   AndroidNotification? androidNotification = message.notification?.android;
-    //   if (notification != null && androidNotification != null) {
-    //     flutterLocalNotificationsPlugin.show(
-    //         notification.hashCode,
-    //         notification.title,
-    //         notification.body,
-    //         NotificationDetails(
-    //           android: AndroidNotificationDetails(
-    //             channel.id,
-    //             channel.name,
-    //             // channel.description,
-    //             playSound: true,
-    //             icon: '@mipmap/ic_launcher',
-    //           ),
-    //         )
-    //     );
-    //   }
-    //   // if(message.notification != null){
-    //   //   print(message.notification!.title);
-    //   //   print(message.notification!.body);
-    //   // }
-    // });
-    //
-    // FirebaseMessaging.onMessageOpenedApp.listen((message) {
-    //   RemoteNotification? notification = message.notification;
-    //   AndroidNotification? androidNotification = message.notification?.android;
-    //   if (notification != null && androidNotification != null) {
-    //     showDialog(
-    //         context: context,
-    //         builder: (_) {
-    //           return AlertDialog(
-    //               title: Text(notification.title!),
-    //               content: SingleChildScrollView(
-    //                   child: Column(
-    //                       crossAxisAlignment: CrossAxisAlignment.start,
-    //                       children: [
-    //                         Text(notification.body!),
-    //                       ]
-    //                   )
-    //               )
-    //           );
-    //         }
-    //     );
-    //   }
-    //   // final routeFromMessage = message.data["route"];
-    //   // Navigator.of(context).pushNamed(routeFromMessage);
-    // });
-    // messageHandler();
-    // LocalNotificationService.initialize(_notificationsPlugin);
   }
-
-  // Future<void> _init() async {
-  //   final getHelpTime = (await SharedPreferences.getInstance()).getInt(
-  //       'problem_time');
-  //   if (getHelpTime != null) {
-  //     final duration = getHelpTime - DateTime
-  //         .now()
-  //         .millisecondsSinceEpoch;
-  //     if (duration > 0) {
-  //       _timer = Timer(Duration(milliseconds: duration), _handleTimeout);
-  //
-  //       _remainingDuration = Duration(milliseconds: duration);
-  //
-  //       // Update remaining duration every second
-  //       Timer.periodic(Duration(seconds: 1), (_) {
-  //         if (_remainingDuration.inSeconds > 0) {
-  //           if (mounted) {
-  //             setState(() {
-  //               _remainingDuration -= Duration(seconds: 1);
-  //             });
-  //           }
-  //         }
-  //       });
-  //       return;
-  //     }
-  //   }
-  //   _problemState.value = true;
-  // }
-  //
-  // void _handleTimeout() {
-  //   _problemState.value = true;
-  //   _timer?.cancel();
-  // }
-  //
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   controller.dispose();
-  //   _timer?.cancel();
-  // }
 
   Future _init() async {
     final getHelpTime =
@@ -720,12 +623,12 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                          imageList!.isEmpty ? Container()
-                              : Container(
-                              height: MediaQuery.of(context).size.height *0.28,
-                              decoration: BoxDecoration(
-                              ),
-                              child: GridView.count(
+                      imageList!.isEmpty ? Container()
+                          : Container(
+                          height: MediaQuery.of(context).size.height *0.28,
+                          decoration: BoxDecoration(
+                          ),
+                          child: GridView.count(
                             crossAxisCount: 2,
                             children: List.generate(imageList!.length, (index){
                               return Container(

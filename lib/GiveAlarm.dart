@@ -1,14 +1,9 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled2/CheckRecordings.dart';
 import 'package:untitled2/GovHome.dart';
+import 'package:untitled2/Identify.dart';
 import 'package:untitled2/ProvideSafetyMessage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
@@ -173,7 +168,6 @@ class _GiveAlarmWidgetState extends State<GiveAlarmWidget> {
                                     value: isSwitched,
                                     activeColor: const Color(0xff02165c),
                                     onChanged: (value) async{
-                                      // print(value);
                                       if(value == true){
                                         String body = "Alarm system has been turned on";
                                         Map<String,
@@ -399,6 +393,10 @@ class _GiveAlarmWidgetState extends State<GiveAlarmWidget> {
                                         padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                         child: ElevatedButton(
                                           onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) => const Identify()));
                                           },
                                           child: Icon( // <-- Icon
                                             Icons.add_a_photo_sharp,

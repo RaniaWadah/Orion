@@ -15,6 +15,7 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:untitled2/CheckRecordings.dart';
 import 'package:untitled2/GiveAlarm.dart';
 import 'package:untitled2/GovHome.dart';
+import 'package:untitled2/Identify.dart';
 import 'package:untitled2/StartRecording.dart';
 
 // class Speaker extends StatelessWidget {
@@ -443,6 +444,10 @@ class _SpeakerPageState extends State<SpeakerPage> {
                                             padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                             child: ElevatedButton(
                                               onPressed: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => const Identify()));
                                               },
                                               child: Icon( // <-- Icon
                                                 Icons.add_a_photo_sharp,

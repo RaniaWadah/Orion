@@ -10,6 +10,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled2/CheckRecordings.dart';
 import 'package:untitled2/GiveAlarm.dart';
+import 'package:untitled2/Identify.dart';
 import 'package:untitled2/ProvideSafetyMessage.dart';
 import 'package:untitled2/StartRecording.dart';
 import 'package:untitled2/ViewNotifications.dart';
@@ -731,7 +732,12 @@ class _GovHomeWidgetState extends State<GovHomeWidget> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(110, 10, 10, 10),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Identify()));
+                          },
                           child: const Text('Identify', style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,

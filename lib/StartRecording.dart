@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled2/CheckRecordings.dart';
 import 'package:untitled2/GiveAlarm.dart';
 import 'package:untitled2/GovHome.dart';
+import 'package:untitled2/Identify.dart';
 import 'package:untitled2/ProvideSafetyMessage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
@@ -82,6 +83,8 @@ class _StartRecordingWidgetState extends State<StartRecordingWidget> {
   bool record = false;
   bool isRecorded = false;
   bool _isVisible = true;
+  bool _isTaskComplete = false;
+
   void _hideButton() {
     setState(() {
       _isVisible = false;
@@ -248,37 +251,14 @@ class _StartRecordingWidgetState extends State<StartRecordingWidget> {
                                   padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      record = !record;
-                                      var url = Uri.parse('http://192.168.0.221:5000/record_status');
-                                      var response = await http.post(url,
-                                          headers: {'Content-Type': 'application/json'},
-                                          body: jsonEncode({'status': record}));
-                                      if (response.statusCode == 200) {
-                                        if(record){
-                                          print('Recording Started');
-                                          Data = await getData('http://192.168.0.221:5000/video_viewer');
-                                          var DecodedData = jsonDecode(Data);
-                                          print(DecodedData);
-                                        }
-                                        else{
-                                          print('Recording Stopped');
-                                        }
-                                      }
-                                      else {
-                                        print('Failed to start recording');
-                                      }
-                                      // Data = await getData('http://192.168.0.221:5000/video_viewer');
-                                      // var DecodedData = jsonDecode(Data);
-                                      // print(DecodedData);
-                                      // selectVideoFromCamera();
+                                      setState(() {
+                                        _isTaskComplete = true;
+                                      });
+                                      Data = await getData('http://192.168.0.221:5000/record');
+                                      var DecodedData = jsonDecode(Data);
+                                      print(DecodedData);
 
                                     },
-                                    // child: const Text('Start Recording', style: TextStyle(
-                                    //   color: Colors.white,
-                                    //   fontSize: 20,
-                                    //   fontWeight: FontWeight.bold,
-                                    // ),
-                                    // ),
                                     child: Icon( // <-- Icon
                                       Icons.video_camera_back_sharp,
                                       size: 38.0,
@@ -294,93 +274,21 @@ class _StartRecordingWidgetState extends State<StartRecordingWidget> {
                                   ),
                                 ),
                               ),
+
                             ]),
                       ),
-                      // ElevatedButton(
-                      //   onPressed: () async {
-                      //     var url = Uri.parse('http://192.168.0.221:5000/record_status');
-                      //     var response = await http.post(url,
-                      //         headers: {'Content-Type': 'application/json'},
-                      //         body: jsonEncode({'status': false}));
-                      //     if (response.statusCode == 200) {
-                      //       print('Recording Stopped');
-                      //       // Data = await getData('http://192.168.0.221:5000/stop_camera_stream');
-                      //       // var DecodedData = jsonDecode(Data);
-                      //       // print(DecodedData);
-                      //     } else {
-                      //       print('Failed to stop recording');
-                      //     }
-                      //     // Data = await getData('http://192.168.0.221:5000/video_viewer');
-                      //     // var DecodedData = jsonDecode(Data);
-                      //     // print(DecodedData);
-                      //     // selectVideoFromCamera();
-                      //   },
-                      //   child: const Text('Stop Recording', style: TextStyle(
-                      //     color: Colors.white,
-                      //     fontSize: 20,
-                      //     fontWeight: FontWeight.bold,
-                      //   ),
-                      //   ),
-                      //   // child: Icon( // <-- Icon
-                      //   //   Icons.video_camera_back_sharp,
-                      //   //   size: 38.0,
-                      //   //   color: Colors.white,
-                      //   // ),
-                      //   style: ElevatedButton.styleFrom(
-                      //     primary: const Color(
-                      //         0xff02165c),
-                      //     padding: EdgeInsets.fromLTRB(18.5, 24, 20, 20),
-                      //     // padding: EdgeInsets.symmetric(horizontal: 50),
-                      //     shape: CircleBorder(),
-                      //   ), // <-- Text
-                      // ),
-                      isRecorded?
+                      _isTaskComplete?
                       Visibility(
                         visible: _isVisible,
                         child: Padding (padding: const EdgeInsets.fromLTRB(5, 25, 10, 5),
                           child: ElevatedButton(
-                            onPressed: () async{
-                              final fileName = Path.basename(vid!.path);
-                              final destination = 'files/$fileName';
-                              try {
-                                final Reference ref = FirebaseStorage.instance.ref(destination).child('file/');
-                                final TaskSnapshot uploadTask = await ref.putFile(vid!);
-                                final String downloadUrl = await uploadTask.ref.getDownloadURL();
-
-                                final govSnapshot = await FirebaseFirestore.instance.collection('government').
-                                doc(FirebaseAuth.instance.currentUser!.uid).get();
-                                Map<String,
-                                    dynamic> Recordings = {
-                                  'Date and Time': DateTime.now().toString(),
-                                  'Video': downloadUrl,
-                                  'Location': govSnapshot.data()!['Location'],
-                                };
-                                db.push().set(Recordings);
-
-                                CollectionReference userRef = FirebaseFirestore
-                                    .instance.collection(
-                                    'Recordings');
-                                userRef.doc()
-                                    .set({
-                                  'Date and Time': DateTime.now().toString(),
-                                  'Video': downloadUrl,
-                                  'Location': govSnapshot.data()!['Location'],
-                                });
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        content: Text('Video has been saved'),
-                                      );
-                                    }
-                                );
-
-                              } catch (e) {
-                                print('error occurred');
-                              }
+                            onPressed: () async {
                               _hideButton();
+                              Data = await getData('http://192.168.0.221:5000/display');
+                              var DecodedData = jsonDecode(Data);
+                              print(DecodedData);
                             },
-                            child: const Text('Save Video', style: TextStyle(
+                            child: const Text('Display Video', style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -397,11 +305,70 @@ class _StartRecordingWidgetState extends State<StartRecordingWidget> {
                         ),
                       ):
                           Container(),
-                          // Padding(
-                          //   padding: const EdgeInsets.fromLTRB(5, 25, 10, 5),
-                          //   child: Container(),
-                          // ),
-                      Padding (padding: const EdgeInsets.fromLTRB(3, 30, 10, 10),
+                      // isRecorded?
+                      // Visibility(
+                      //   visible: _isVisible,
+                      //   child: Padding (padding: const EdgeInsets.fromLTRB(5, 25, 10, 5),
+                      //     child: ElevatedButton(
+                      //       onPressed: () async{
+                      //         final fileName = Path.basename(vid!.path);
+                      //         final destination = 'files/$fileName';
+                      //         try {
+                      //           final Reference ref = FirebaseStorage.instance.ref(destination).child('file/');
+                      //           final TaskSnapshot uploadTask = await ref.putFile(vid!);
+                      //           final String downloadUrl = await uploadTask.ref.getDownloadURL();
+                      //
+                      //           final govSnapshot = await FirebaseFirestore.instance.collection('government').
+                      //           doc(FirebaseAuth.instance.currentUser!.uid).get();
+                      //           Map<String,
+                      //               dynamic> Recordings = {
+                      //             'Date and Time': DateTime.now().toString(),
+                      //             'Video': downloadUrl,
+                      //             'Location': govSnapshot.data()!['Location'],
+                      //           };
+                      //           db.push().set(Recordings);
+                      //
+                      //           CollectionReference userRef = FirebaseFirestore
+                      //               .instance.collection(
+                      //               'Recordings');
+                      //           userRef.doc()
+                      //               .set({
+                      //             'Date and Time': DateTime.now().toString(),
+                      //             'Video': downloadUrl,
+                      //             'Location': govSnapshot.data()!['Location'],
+                      //           });
+                      //           showDialog(
+                      //               context: context,
+                      //               builder: (context) {
+                      //                 return AlertDialog(
+                      //                   content: Text('Video has been saved'),
+                      //                 );
+                      //               }
+                      //           );
+                      //
+                      //         } catch (e) {
+                      //           print('error occurred');
+                      //         }
+                      //         _hideButton();
+                      //       },
+                      //       child: const Text('Save Video', style: TextStyle(
+                      //         color: Colors.white,
+                      //         fontSize: 20,
+                      //         fontWeight: FontWeight.bold,
+                      //       ),
+                      //       ),
+                      //       style: ElevatedButton.styleFrom(primary: const Color(
+                      //           0xff02165c), minimumSize: Size(170, 45),
+                      //           padding: EdgeInsets.symmetric(horizontal: 50),
+                      //           shape: RoundedRectangleBorder(
+                      //             borderRadius: BorderRadius.circular(20),
+                      //           )
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ):
+                      //     Container(),
+                      Padding (padding: const EdgeInsets.fromLTRB(3, 20, 10, 10),
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.pushReplacement(
@@ -431,7 +398,7 @@ class _StartRecordingWidgetState extends State<StartRecordingWidget> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(0, 123, 0, 0),
+                              padding: EdgeInsetsDirectional.fromSTEB(0, 131, 0, 0),
                               child: Row(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
@@ -537,6 +504,10 @@ class _StartRecordingWidgetState extends State<StartRecordingWidget> {
                                         padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                                         child: ElevatedButton(
                                           onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) => const Identify()));
                                           },
                                           child: Icon( // <-- Icon
                                             Icons.add_a_photo_sharp,

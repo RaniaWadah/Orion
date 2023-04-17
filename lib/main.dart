@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled2/UserMainPage.dart';
 import 'package:untitled2/GovLogin.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:untitled2/ViewNotifications.dart';
 import 'package:untitled2/firebase_config.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
@@ -129,7 +131,11 @@ Future<void> main() async {
       AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (_) => ButtonTimerModel(),
+    child: const MyApp(),
+  ),
+  );
 }
 
 
