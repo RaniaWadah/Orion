@@ -52,14 +52,4 @@ class DefaultFirebaseOptions {
       appId: '1:989604871715:android:7f085bd1142e800743fb96',
       messagingSenderId: '989604871715',
       projectId: 'csc350orion');
-
-  // static const FirebaseOptions ios = FirebaseOptions(
-  //   apiKey: 'AIzaSyDbX9DgbHJlkbhQMG-E7UoVzAtK4ZuwhKg',
-  //   appId: '1:910130946643:ios:e84916e67cef1083b71ca6',
-  //   messagingSenderId: '910130946643',
-  //   projectId: 'fir-tutorial-ee73b',
-  //   storageBucket: 'fir-tutorial-ee73b.appspot.com',
-  //   iosClientId: '910130946643-d1l3s85pj0eoncnb86pr08j6untmpvf6.apps.googleusercontent.com',
-  //   iosBundleId: 'com.example.firebaseTutroial',
-  // );
 }

@@ -1,18 +1,11 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:untitled2/HomePage.dart';
 import 'package:untitled2/UserLogin.dart';
 import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/services.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
-
-
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
@@ -87,7 +80,6 @@ class _UserSignupWidgetState extends State<UserSignupWidget> {
   late CollectionReference userRef;
   final firestore = FirebaseFirestore.instance;
   String initialCountry = 'KW';
-  PhoneNumber number = PhoneNumber(isoCode: 'KW');
   bool _checkbox = false;
 
   validateMobile(String value) {
@@ -104,7 +96,6 @@ class _UserSignupWidgetState extends State<UserSignupWidget> {
 
   final formKey = GlobalKey<FormState>();
   bool isVisible = true;
-  bool _isVisible = true;
 
   bool isNumeric(String s) {
     if (s == null) {
@@ -437,13 +428,6 @@ class _UserSignupWidgetState extends State<UserSignupWidget> {
                                       'Phone Number': phoneController.text,
                                     };
                                     termsAndConditions(users);
-                                    // db.push().set(users);
-                                    // print(fNameController.text);
-                                    // print(lNameController.text);
-                                    // print(emailController.text);
-                                    // print(civilIDController.text);
-                                    //
-                                    // signUp(users);
                                   }
 
                                   else{
@@ -593,13 +577,6 @@ class _UserSignupWidgetState extends State<UserSignupWidget> {
     navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 
-  void getPhoneNumber(String phoneNumber) async {
-    PhoneNumber number = await PhoneNumber.getRegionInfoFromPhoneNumber(phoneNumber, 'KW');
-    setState(() {
-      this.number = number;
-    });
-  }
-
   void termsAndConditions(Map<String, String> users){
     showDialog(
         context: this.context,
@@ -682,7 +659,6 @@ class _UserSignupWidgetState extends State<UserSignupWidget> {
                                           'I agree to the terms and conditions.',
                                           style: TextStyle(fontSize: 15,
                                               fontWeight: FontWeight.bold),
-                                      // textAlign: TextAlign.center,
                                         ),
                                       ),
                                   ],

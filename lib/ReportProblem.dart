@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
-import 'package:awesome_icons/awesome_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -9,29 +7,18 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutterfire_ui/auth.dart';
-import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled2/UserHome.dart';
-import 'package:untitled2/services/localNotification.dart';
 import 'package:http/http.dart' as http;
-import 'package:rxdart/subjects.dart';
 import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as Path;
-import 'package:image_cropper/image_cropper.dart';
 import 'package:untitled2/services/image_helper.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:untitled2/services/NotificationService.dart';
 
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
@@ -39,13 +26,10 @@ final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 class ReportAProblem extends StatelessWidget {
   const ReportAProblem({Key? key}) : super(key: key);
 
-  static const String _title = 'Orion';
-
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // navigatorKey: navigatorKey,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         body: const ReportAProblemWidget(),
@@ -62,16 +46,12 @@ class ReportAProblemWidget extends StatefulWidget {
 
 class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
   final formKey = GlobalKey<FormState>();
-  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   String token = 'cH1jckoWToE:APA91bERLybvnYFwyUz4mB5dz2DXoqAygjObRnQjzEZ-klIemoyCwN59hjbXHnB5ryXSdMEaew60sBAsctJ1ELWRmdMLz3l0fpjCKoPZqYzA13zskfm_z8TEG2Zdq0H57N7k3mbutbY3';
   String? mtoken = ' ';
   late DatabaseReference db;
-  String? _currentAddress;
-  Position? _currentPosition;
   bool isButtonActive = true;
   Timer? _countdownTimer;
   final ValueNotifier<int> _timeLeft = ValueNotifier<int>(0);
-  final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
   late TextEditingController controller;
   TextEditingController categoryController = TextEditingController();
   TextEditingController otherController = TextEditingController();
@@ -92,7 +72,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
   bool isValueEmpty = true;
   bool isImageEmpty = true;
   Timer? _timer;
-  Duration _remainingDuration = Duration();
 
   final List<String> items = [
     '',
@@ -105,7 +84,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
 
   String? selectedValue;
 
-  // late final FlutterLocalNotificationsPlugin _notificationsPlugin;
   final ValueNotifier<bool> _problemState = ValueNotifier<bool>(false);
   final firestore = FirebaseFirestore.instance;
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
@@ -144,10 +122,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
       sound: true,
     );
 
-    // FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-    //
-    // });
-
   }
 
   Future<void> sendPushMsgPlb(List<String> token, String title, String body, List<XFile>? imageList) async {
@@ -181,7 +155,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
               'sound': 'default',
               'alert': 'new',
               'image': userSnapshot.data()!['imageUrl'],
-              // 'image': 'https://s3.us-east-2.amazonaws.com/crypticpoint.projects.upload/convergein/users/162738162682638205.jpg',
             },
           }),
         );
@@ -213,11 +186,9 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
               'sound': 'default',
               'alert': 'new',
               'image': userSnapshot.data()!['imageUrl'],
-              // 'image': 'https://s3.us-east-2.amazonaws.com/crypticpoint.projects.upload/convergein/users/162738162682638205.jpg',
             },
           }),
         );
-        // styleInformation: bigTextStyleInformation;
         print('FCM request for device sent!');
       } catch (e) {
         print(e);
@@ -246,11 +217,9 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
               'sound': 'default',
               'alert': 'new',
               'image': userSnapshot.data()!['imageUrl'],
-              // 'image': 'https://s3.us-east-2.amazonaws.com/crypticpoint.projects.upload/convergein/users/162738162682638205.jpg',
             },
           }),
         );
-        // styleInformation: bigTextStyleInformation;
         print('FCM request for device sent!');
       } catch (e) {
         print(e);
@@ -317,15 +286,9 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
     }
   }
 
-  void initInfo() async{
-    // await FirebaseFirestore.instance.collection('userTokens').doc('users1').set()
-  }
-
-
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     db = FirebaseDatabase.instance.ref().child('userNotifications');
     controller = TextEditingController();
@@ -338,8 +301,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       if (message != null) {
         print("New Notification");
-        // final routeFromMessage = message.data["route"];
-        // Navigator.of(context).pushNamed(routeFromMessage);
       }
     });
   }
@@ -541,11 +502,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
                               ),
                             ),
                           ),
-
-
-                          // IconButton( // clear dropdown button
-                          //     onPressed: () => null,
-                          //     icon: Icon(Icons.clear))
                         ],
                       )
                     ],
@@ -558,7 +514,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 5.0),
                       height: 45,
-                      // width: 240,
                       child: TextFormField(
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
@@ -576,7 +531,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
                               fontSize: 10
                           ),
                         ),
-                        // enabled: isValueEmpty == true,
                         controller: otherController,
                         onChanged: (value) {
                           setState(() {
@@ -654,7 +608,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
                                                   setState(() {
                                                     imageList!.removeAt(index);
                                                     pathList!.removeAt(index);
-                                                    // pathList!.removeAt(index);
                                                   });
                                                 }
                                             ),
@@ -684,9 +637,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
                               child: ElevatedButton.icon(
                                 onPressed: () async{
                                   selectImage();
-                                  // setState(() {
-                                  //
-                                  // });
                                 },
                                 icon: Icon( // <-- Icon
                                   Icons.add,
@@ -699,9 +649,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
                                   primary: const Color(
                                       0xff02165c),
                                   padding: EdgeInsets.fromLTRB(23, 15, 15, 15),
-                                  // shape: RoundedRectangleBorder(
-                                  //   borderRadius: BorderRadius.circular(100),
-                                  // )
                                 ),// <-- Text
                               ),
                             )
@@ -838,13 +785,7 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
                                       ),
                                     );
                                   }),
-                              // child: const Text('Submit Problem', style: TextStyle(
-                              //   color: Colors.white,
-                              //   fontSize: 20,
-                              //   fontWeight: FontWeight.bold,
-                              //
-                              // ),
-                              // ),
+
                               style: ElevatedButton.styleFrom(
                                   primary: value == true ? const Color(
                                       0xff02165c) : const Color(
@@ -924,7 +865,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
                                     print('Image Path: ');
                                     print(selectedImagePath);
                                     if(selectedImagePath != ''){
-                                      // pathList!.add(selectedImagePath);
                                       isImageEmpty = false;
                                       Navigator.pop(context);
                                       setState(() {
@@ -964,7 +904,6 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
                                     print('Image Path: ');
                                     print(selectedImagePath);
                                     if(selectedImagePath != ''){
-                                      // pathList!.add(selectedImagePath);
                                       isImageEmpty = false;
                                       Navigator.pop(context);
                                       setState(() {
@@ -1019,15 +958,7 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
 
         if(permissionStatus.isGranted){
           XFile? file = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 100);
-          // var img = File(file!.path);
           if(file != null){
-            // var snapshot = await FirebaseStorage.instance.ref()
-            //     .child('images/imageName')
-            //     .putFile(img);
-            // var downloadUrl = await snapshot.ref.getDownloadURL();
-            // setState(() {
-            //   imageUrl = downloadUrl;
-            // });
             photo = File(file.path);
             uploadFile();
 
@@ -1048,15 +979,7 @@ class _ReportAProblemWidgetState extends State<ReportAProblemWidget> {
 
         if(permissionStatus.isGranted){
           XFile? file = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 100);
-          // var img = File(file!.path);
           if(file != null){
-            // var snapshot = await FirebaseStorage.instance.ref()
-            //     .child('images/imageName')
-            //     .putFile(img);
-            // var downloadUrl = await snapshot.ref.getDownloadURL();
-            // setState(() {
-            //   imageUrl = downloadUrl;
-            // });
             photo = File(file.path);
             uploadFile();
 

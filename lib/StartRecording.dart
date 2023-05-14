@@ -5,13 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled2/CheckRecordings.dart';
 import 'package:untitled2/GiveAlarm.dart';
 import 'package:untitled2/GovHome.dart';
@@ -21,10 +18,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart' as Path;
-import 'package:flutter/foundation.dart';
-
-
-
 
 class StartRecording extends StatelessWidget {
   const StartRecording({Key? key}) : super(key: key);
@@ -36,6 +29,7 @@ class StartRecording extends StatelessWidget {
     return MaterialApp(
       title: _title,
       home: Scaffold(
+        resizeToAvoidBottomInset : false,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(70.0),
           child: AppBar(
@@ -61,9 +55,6 @@ class StartRecording extends StatelessWidget {
         ),
         body: const StartRecordingWidget(),
       ),
-      // routes: {
-      //   "View": (_) => ViewNotifications(),
-      // },
     );
   }
 }
@@ -254,7 +245,7 @@ class _StartRecordingWidgetState extends State<StartRecordingWidget> {
                                       setState(() {
                                         _isTaskComplete = true;
                                       });
-                                      Data = await getData('http://192.168.0.221:5000/record');
+                                      Data = await getData('http://192.168.8.105:5000/record');
                                       var DecodedData = jsonDecode(Data);
                                       print(DecodedData);
 
@@ -277,81 +268,18 @@ class _StartRecordingWidgetState extends State<StartRecordingWidget> {
 
                             ]),
                       ),
-                      _isTaskComplete?
-                      Visibility(
-                        visible: _isVisible,
-                        child: Padding (padding: const EdgeInsets.fromLTRB(5, 25, 10, 5),
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              _hideButton();
-                              Data = await getData('http://192.168.0.221:5000/display');
-                              var DecodedData = jsonDecode(Data);
-                              print(DecodedData);
-                            },
-                            child: const Text('Display Video', style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            ),
-                            style: ElevatedButton.styleFrom(primary: const Color(
-                                0xff02165c), minimumSize: Size(170, 45),
-                                padding: EdgeInsets.symmetric(horizontal: 50),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                )
-                            ),
-                          ),
-                        ),
-                      ):
-                          Container(),
-                      // isRecorded?
+                      // _isTaskComplete?
                       // Visibility(
                       //   visible: _isVisible,
                       //   child: Padding (padding: const EdgeInsets.fromLTRB(5, 25, 10, 5),
                       //     child: ElevatedButton(
-                      //       onPressed: () async{
-                      //         final fileName = Path.basename(vid!.path);
-                      //         final destination = 'files/$fileName';
-                      //         try {
-                      //           final Reference ref = FirebaseStorage.instance.ref(destination).child('file/');
-                      //           final TaskSnapshot uploadTask = await ref.putFile(vid!);
-                      //           final String downloadUrl = await uploadTask.ref.getDownloadURL();
-                      //
-                      //           final govSnapshot = await FirebaseFirestore.instance.collection('government').
-                      //           doc(FirebaseAuth.instance.currentUser!.uid).get();
-                      //           Map<String,
-                      //               dynamic> Recordings = {
-                      //             'Date and Time': DateTime.now().toString(),
-                      //             'Video': downloadUrl,
-                      //             'Location': govSnapshot.data()!['Location'],
-                      //           };
-                      //           db.push().set(Recordings);
-                      //
-                      //           CollectionReference userRef = FirebaseFirestore
-                      //               .instance.collection(
-                      //               'Recordings');
-                      //           userRef.doc()
-                      //               .set({
-                      //             'Date and Time': DateTime.now().toString(),
-                      //             'Video': downloadUrl,
-                      //             'Location': govSnapshot.data()!['Location'],
-                      //           });
-                      //           showDialog(
-                      //               context: context,
-                      //               builder: (context) {
-                      //                 return AlertDialog(
-                      //                   content: Text('Video has been saved'),
-                      //                 );
-                      //               }
-                      //           );
-                      //
-                      //         } catch (e) {
-                      //           print('error occurred');
-                      //         }
+                      //       onPressed: () async {
                       //         _hideButton();
+                      //         Data = await getData('http://192.168.0.221:5000/display');
+                      //         var DecodedData = jsonDecode(Data);
+                      //         print(DecodedData);
                       //       },
-                      //       child: const Text('Save Video', style: TextStyle(
+                      //       child: const Text('Display Video', style: TextStyle(
                       //         color: Colors.white,
                       //         fontSize: 20,
                       //         fontWeight: FontWeight.bold,
@@ -368,169 +296,174 @@ class _StartRecordingWidgetState extends State<StartRecordingWidget> {
                       //   ),
                       // ):
                       //     Container(),
-                      Padding (padding: const EdgeInsets.fromLTRB(3, 20, 10, 10),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                                context, MaterialPageRoute(
-                                builder: (context) =>
-                                    GovHome()));
-                          },
-                          child: const Text('Home', style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                      Column(
+                        children: [
+                          Padding (padding: const EdgeInsets.fromLTRB(3, 20, 10, 10),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context, MaterialPageRoute(
+                                    builder: (context) =>
+                                        GovHome()));
+                              },
+                              child: const Text('Home', style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              ),
+                              style: ElevatedButton.styleFrom(primary: const Color(
+                                  0xff02165c), minimumSize: Size(205, 45),
+                                  padding: EdgeInsets.symmetric(horizontal: 50),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  )
+                              ),
+                            ),
                           ),
-                          ),
-                          style: ElevatedButton.styleFrom(primary: const Color(
-                              0xff02165c), minimumSize: Size(205, 45),
-                              padding: EdgeInsets.symmetric(horizontal: 50),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              )
-                          ),
-                        ),
+                        ]
                       ),
 
                       IconTheme(
                         data: IconThemeData(size: 22.0, color: Colors.white),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(0, 131, 0, 0),
-                              child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                      EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                                      child: Container(
-                                        width: 90,
-                                        height: 55,
-                                        padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => CheckRecordings()));
-                                          },
-                                          child: Icon( // <-- Icon
-                                            Icons.video_collection_sharp,
-                                            size: 30.0,
-                                            color: Colors.white,
+                        child: SingleChildScrollView(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(0, 209, 0, 0),
+                                child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                        EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                                        child: Container(
+                                          width: 90,
+                                          height: 55,
+                                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => CheckRecordings()));
+                                            },
+                                            child: Icon( // <-- Icon
+                                              Icons.video_collection_sharp,
+                                              size: 30.0,
+                                              color: Colors.white,
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                                primary: const Color(
+                                                    0xff02165c),
+                                                padding: EdgeInsets.fromLTRB(20, 13, 20, 20),
+                                                // padding: EdgeInsets.symmetric(horizontal: 50),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                )
+                                            ), // <-- Text
                                           ),
-                                          style: ElevatedButton.styleFrom(
-                                              primary: const Color(
-                                                  0xff02165c),
-                                              padding: EdgeInsets.fromLTRB(20, 13, 20, 20),
-                                              // padding: EdgeInsets.symmetric(horizontal: 50),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(20),
-                                              )
-                                          ), // <-- Text
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                      EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                                      child: Container(
-                                        width: 90,
-                                        height: 55,
-                                        padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => GiveAlarm()));
-                                          },
-                                          child: Icon( // <-- Icon
-                                            Icons.alarm_add_sharp,
-                                            size: 30.0,
-                                            color: Colors.white,
+                                      Padding(
+                                        padding:
+                                        EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                                        child: Container(
+                                          width: 90,
+                                          height: 55,
+                                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => GiveAlarm()));
+                                            },
+                                            child: Icon( // <-- Icon
+                                              Icons.alarm_add_sharp,
+                                              size: 30.0,
+                                              color: Colors.white,
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                                primary: const Color(
+                                                    0xff02165c),
+                                                padding: EdgeInsets.fromLTRB(20, 13, 20, 20),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                )
+                                            ), // <-- Text
                                           ),
-                                          style: ElevatedButton.styleFrom(
-                                              primary: const Color(
-                                                  0xff02165c),
-                                              padding: EdgeInsets.fromLTRB(20, 13, 20, 20),
-                                              // padding: EdgeInsets.symmetric(horizontal: 50),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(20),
-                                              )
-                                          ), // <-- Text
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                      EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                                      child: Container(
-                                        width: 90,
-                                        height: 55,
-                                        padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => SpeakerPage()));
-                                          },
-                                          child: Icon( // <-- Icon
-                                            Icons.keyboard_voice_sharp,
-                                            size: 35.0,
-                                            color: Colors.white,
+                                      Padding(
+                                        padding:
+                                        EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                                        child: Container(
+                                          width: 90,
+                                          height: 55,
+                                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => SpeakerPage()));
+                                            },
+                                            child: Icon( // <-- Icon
+                                              Icons.keyboard_voice_sharp,
+                                              size: 35.0,
+                                              color: Colors.white,
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                                primary: const Color(
+                                                    0xff02165c),
+                                                padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                                                // padding: EdgeInsets.symmetric(horizontal: 50),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                )
+                                            ), // <-- Text
                                           ),
-                                          style: ElevatedButton.styleFrom(
-                                              primary: const Color(
-                                                  0xff02165c),
-                                              padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
-                                              // padding: EdgeInsets.symmetric(horizontal: 50),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(20),
-                                              )
-                                          ), // <-- Text
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                      EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                                      child: Container(
-                                        width: 90,
-                                        height: 55,
-                                        padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => const Identify()));
-                                          },
-                                          child: Icon( // <-- Icon
-                                            Icons.add_a_photo_sharp,
-                                            size: 30.0,
-                                            color: Colors.white,
+                                      Padding(
+                                        padding:
+                                        EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                                        child: Container(
+                                          width: 90,
+                                          height: 55,
+                                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => const Identify()));
+                                            },
+                                            child: Icon( // <-- Icon
+                                              Icons.add_a_photo_sharp,
+                                              size: 30.0,
+                                              color: Colors.white,
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                                primary: const Color(
+                                                    0xff02165c),
+                                                padding: EdgeInsets.fromLTRB(20, 13, 20, 20),
+                                                // padding: EdgeInsets.symmetric(horizontal: 50),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                )
+                                            ), // <-- Text
                                           ),
-                                          style: ElevatedButton.styleFrom(
-                                              primary: const Color(
-                                                  0xff02165c),
-                                              padding: EdgeInsets.fromLTRB(20, 13, 20, 20),
-                                              // padding: EdgeInsets.symmetric(horizontal: 50),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(20),
-                                              )
-                                          ), // <-- Text
                                         ),
                                       ),
-                                    ),
-                                  ]
-                              ),
+                                    ]
+                                ),
 
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ],

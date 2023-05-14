@@ -52,9 +52,6 @@ class GovHome extends StatelessWidget {
         ),
         body: const GovHomeWidget(),
       ),
-      // routes: {
-      //   "View": (_) => ViewNotifications(),
-      // },
     );
   }
 }
@@ -97,38 +94,6 @@ class _GovHomeWidgetState extends State<GovHomeWidget> {
     }
   }
 
-  // void getToken() async{
-  //   await _firebaseMessaging.getToken().then(
-  //           (token) {
-  //         setState(() {
-  //           mtoken = token;
-  //           // print(mtoken);
-  //         });
-  //   );
-  // }
-  //
-  // void saveToken(String? token) async{
-  //   await FirebaseFirestore.instance.collection('government').
-  //   doc(FirebaseAuth.instance.currentUser!.uid).set(
-  //       {'Token' : token}, SetOptions(merge: true)
-  //   );
-  // }
-
-  // _loadCounter() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     token = (prefs.getString('token') ?? '');
-  //   });
-  // }
-  //
-  // _incrementCounter() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   setState(() async{
-  //     token = 'cH1jckoWToE:APA91bERLybvnYFwyUz4mB5dz2DXoqAygjObRnQjzEZ-klIemoyCwN59hjbXHnB5ryXSdMEaew60sBAsctJ1ELWRmdMLz3l0fpjCKoPZqYzA13zskfm_z8TEG2Zdq0H57N7k3mbutbY3';
-  //   });
-  //   prefs.setString('token', token);
-  // }
-
   void getAddress() async {
     Position position = await _getGeoLocationPosition();
     location = 'Lat: ${position.latitude} , Long: ${position.longitude}';
@@ -170,10 +135,6 @@ class _GovHomeWidgetState extends State<GovHomeWidget> {
         badge: true,
         sound: true,
       );
-
-      // FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-      //
-      // });
 
     }
 
@@ -315,10 +276,6 @@ class _GovHomeWidgetState extends State<GovHomeWidget> {
       }
     }
 
-    void initInfo() async {
-      // await FirebaseFirestore.instance.collection('userTokens').doc('users1').set()
-    }
-
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
       primary: Colors.black,
       minimumSize: Size(350, 45),
@@ -337,26 +294,12 @@ class _GovHomeWidgetState extends State<GovHomeWidget> {
       listenFCM();
       saveToken();
       getAddress();
-      // _getAndSaveToken();
-      // saveToken();
-      // _loadCounter();
-      // _incrementCounter();
-      // getToken();
-      // initInfo();
-      // NotificationService.initNotification(_notificationsPlugin, channel);
 
       FirebaseMessaging.instance.getInitialMessage().then((message) {
         if (message != null) {
           print("New Notification");
-          // final routeFromMessage = message.data["route"];
-          // Navigator.of(context).pushNamed(routeFromMessage);
         }
       });
-      //   if(message != null){
-      //     final routeFromMessage = message.data["route"];
-      //     Navigator.of(context).pushNamed(routeFromMessage);
-      //   }
-      // });
 
       FirebaseMessaging.onMessage.listen((message) {
         RemoteNotification? notification = message.notification;
@@ -379,10 +322,7 @@ class _GovHomeWidgetState extends State<GovHomeWidget> {
               )
           );
         }
-        // if(message.notification != null){
-        //   print(message.notification!.title);
-        //   print(message.notification!.body);
-        // }
+
       });
 
       FirebaseMessaging.onMessageOpenedApp.listen((message) {
@@ -407,11 +347,8 @@ class _GovHomeWidgetState extends State<GovHomeWidget> {
               }
           );
         }
-        // final routeFromMessage = message.data["route"];
-        // Navigator.of(context).pushNamed(routeFromMessage);
+
       });
-      // messageHandler();
-      // LocalNotificationService.initialize(_notificationsPlugin);
 
     }
     @override
@@ -499,181 +436,6 @@ class _GovHomeWidgetState extends State<GovHomeWidget> {
                         padding: const EdgeInsets.fromLTRB(90, 10, 10, 10),
                         child: ElevatedButton(
                           onPressed: () async {
-                            // final govData = await FirebaseFirestore.instance.collection('government').
-                            // doc(FirebaseAuth.instance.currentUser!.uid).get();
-                            //
-                            // String govArea = govData.data()!['Area'];
-                            // String govToken = govData.data()!['Token'];
-                            // QuerySnapshot notiTokens = await FirebaseFirestore.instance.collection('userNotifications')
-                            //     .where('Area', isEqualTo: govArea).get();
-                            //
-                            // List<DocumentSnapshot> notiList = notiTokens.docs;
-                            // List<String> notiTokenList = [];
-                            //
-                            // notiList.forEach((doc) async {
-                            //   dynamic data = doc.data();
-                            //   String? notiToken = data['Sender Device Token']?.toString();
-                            //   if (notiToken != null) {
-                            //     if(notiToken != govToken){
-                            //       notiTokenList.add(notiToken);
-                            //     }
-                            //   }
-                            // });
-                            // print(notiTokenList.toString());
-                            //
-                            //
-                            //
-
-
-                            // QuerySnapshot govAddress = await FirebaseFirestore
-                            //     .instance.collection(
-                            //     'government').where('Area', isNotEqualTo: null).get();
-                            //
-                            // List<DocumentSnapshot> govList = govAddress.docs;
-                            // List<String> govAddressList = [];
-                            //
-                            // govList.forEach((doc) async{
-                            //   dynamic data = doc.data();
-                            //   String? govArea = data['Area']?.toString();
-                            //   if (govArea != null) {
-                            //     govAddressList.add(govArea);
-                            //
-                            //     QuerySnapshot notiAddress = await FirebaseFirestore
-                            //         .instance.collection(
-                            //         'Notifications').where('Area', isEqualTo: govArea).get();
-                            //     List<DocumentSnapshot> notiList = notiAddress.docs;
-                            //     List<String> notiAddressList = [];
-                            //
-                            //     notiList.forEach((doc) async{
-                            //       dynamic data = doc.data();
-                            //       String? notiArea = data['Area']?.toString();
-                            //       if (notiArea != null) {
-                            //         notiAddressList.add(notiArea);
-                            //         print(notiAddressList.toString());
-                            //     //     QuerySnapshot userAddress = await FirebaseFirestore
-                            //     //         .instance.collection(
-                            //     //         'user').where('Area', isEqualTo: notiArea).get();
-                            //     //     List<DocumentSnapshot> usersList = userAddress.docs;
-                            //     //     List<String> userAreaList = [];
-                            //     //
-                            //     //     usersList.forEach((doc) async{
-                            //     //       dynamic data = doc.data();
-                            //     //       String? userArea = data['Area']
-                            //     //           ?.toString();
-                            //     //       if (userArea != null) {
-                            //     //         userAreaList.add(userArea);
-                            //     //         QuerySnapshot snapshot = await FirebaseFirestore
-                            //     //             .instance.collection(
-                            //     //             'user').where('Area', isEqualTo: notiArea).get();
-                            //     //         List<DocumentSnapshot> userList = snapshot.docs;
-                            //     //         List<String> tokenList = [];
-                            //     //         userList.forEach((doc) async{
-                            //     //           dynamic data = doc.data();
-                            //     //           String? token = data['Token']
-                            //     //               ?.toString();
-                            //     //           if (token != null) {
-                            //     //             tokenList.add(token);
-                            //     //             print(tokenList.toString());
-                            //     //             // final userSnapshot = await FirebaseFirestore
-                            //     //             //     .instance.collection('user').
-                            //     //             // doc(FirebaseAuth.instance
-                            //     //             //     .currentUser!.uid).get();
-                            //     //
-                            //     //             final body = "Alarm System Turned On";
-                            //     //             final title = "Give Alarm";
-                            //     //             print(body);
-                            //     //             Map<String,
-                            //     //                 dynamic> Notifications = {
-                            //     //               'Title': title,
-                            //     //               'Description': body,
-                            //     //               'Date and Time': DateTime.now()
-                            //     //                   .toString(),
-                            //     //               // 'Location': userSnapshot
-                            //     //               //     .data()!['Location'],
-                            //     //             };
-                            //     //             db.push().set(Notifications);
-                            //     //
-                            //     //             CollectionReference userRef = FirebaseFirestore
-                            //     //                 .instance.collection(
-                            //     //                 'Notifications');
-                            //     //             userRef.doc()
-                            //     //                 .set({
-                            //     //               'Title': title,
-                            //     //               'Description': body,
-                            //     //               'Date and Time': DateTime.now()
-                            //     //                   .toString(),
-                            //     //               // 'Location': userSnapshot
-                            //     //               //     .data()!['Location'],
-                            //     //             })
-                            //     //                 .then((value) =>
-                            //     //                 print("Notification Added"))
-                            //     //                 .catchError((error) =>
-                            //     //                 print(
-                            //     //                     "Failed to add notification: $error"));
-                            //     //
-                            //     //             NotificationService().sendPushMsg(tokenList, title, body);
-                            //     //           }
-                            //     //         });
-                            //     //       }
-                            //     //     });
-                            //       }
-                            //     });
-                            //   }
-                            // });
-                            //
-
-
-                            // QuerySnapshot snapshot = await FirebaseFirestore
-                            //     .instance.collection(
-                            //     'user').where('Token', isNotEqualTo: null).get();
-                            // List<DocumentSnapshot> userList = snapshot.docs;
-                            // List<String> tokenList = [];
-                            //
-                            // userList.forEach((doc) {
-                            //   dynamic data = doc.data();
-                            //   String? token = data['Token']
-                            //       ?.toString();
-                            //   if (token != null) {
-                            //     tokenList.add(token);
-                            //   }
-                            // });
-
-                            // print(tokenList.toString());
-                            //
-                            // Random random = Random();
-                            // int randomIndex = random.nextInt(
-                            //     tokenList.length);
-                            // String randomToken = tokenList[randomIndex];
-                            // print(tokenList[0]);
-                            //sendPushMessage(token, body, title);
-
-                            // NotificationService.sendPushMessage(token, body, title);
-
-                            // Position position = await _getGeoLocationPosition();
-                            // location = 'Lat: ${position.latitude} , Long: ${position.longitude}';
-                            //
-                            // String address = await GetAddressFromLatLong(position);
-                            //
-                            // String area = await GetAreaFromLatLong(position);
-
-                            // showDialog(
-                            //     context: context,
-                            //     builder: (context) {
-                            //       return AlertDialog(
-                            //         content: Text(
-                            //             'Your request has been successfully sent'),
-                            //       );
-                            //     }
-                            // );
-
-                            // final giveAlarmTime = DateTime.now()
-                            //     .add(
-                            //     const Duration(minutes: 1));
-                            // (await SharedPreferences
-                            //     .getInstance()).setInt(
-                            //     'give_alarm_time', giveAlarmTime
-                            //     .millisecondsSinceEpoch);
-
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

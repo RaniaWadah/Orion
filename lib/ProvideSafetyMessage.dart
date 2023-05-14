@@ -1,33 +1,18 @@
-import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:highlight_text/highlight_text.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:text_to_speech/text_to_speech.dart';
+import 'package:translator/translator.dart';
 import 'package:untitled2/CheckRecordings.dart';
 import 'package:untitled2/GiveAlarm.dart';
 import 'package:untitled2/GovHome.dart';
 import 'package:untitled2/Identify.dart';
 import 'package:untitled2/StartRecording.dart';
-
-// class Speaker extends StatelessWidget {
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: SpeakerPage(),
-//     );
-//   }
-// }
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class SpeakerPage extends StatefulWidget {
   @override
@@ -35,23 +20,101 @@ class SpeakerPage extends StatefulWidget {
 }
 
 class _SpeakerPageState extends State<SpeakerPage> {
+  var languages = ['Arabic', 'Urdu', 'Hindi', 'Persian', 'Filipino', 'Chinese', 'Japanese', 'Korean', 'Turkish', 'French', 'Spanish', 'Italian', 'Ukrainian', 'Russian', 'Swedish', 'Armenian'];
+  var originLanguage = 'English';
+  var destinationLanguage = '';
+  var output = '';
+  String text = 'Press the mic to start providing messages';
+
   stt.SpeechToText? _speech;
   bool _isListening = false;
   // bool isMicListening = false;
-  String _text = "Press the mic to start providing messages";
+  // String _text = "Press the mic to start providing messages";
   double _confidence = 1.0;
   late DatabaseReference db;
 
+  final translator = GoogleTranslator();
+  // final input = "";
+
   String? token = '';
   String? mtoken = ' ';
+
   TextEditingController controller = TextEditingController();
 
   Future Getdata(url) async {
     http.Response Response = await http.get(Uri.parse(url));
     return Response.body;
   }
+  Future<void> translate(String dest, String input) async{
+    GoogleTranslator translator = new GoogleTranslator();
+    var translation = await translator.translate(input, from: getLanguageCode(originLanguage), to: dest);
+    setState(() {
+      output = translation.text.toString();
+    });
+    print(translation.text.toString());
 
-    void listenForPermissions() async {
+    if(dest == '--'){
+      output = 'Fail to translate';
+    }
+  }
+
+  String getLanguageCode(String language){
+    if(language == "English"){
+      return "en";
+    }
+    else if(language == "Hindi"){
+      return "hi";
+    }
+    else if(language == "Persian"){
+      return "fa";
+    }
+    else if(language == "Arabic"){
+      return "ar";
+    }
+    else if(language == "Urdu"){
+      return "ur";
+    }
+    else if(language == "Chinese"){
+      return "zh";
+    }
+    else if(language == "Japanese"){
+      return "ja";
+    }
+    else if(language == "Korean"){
+      return "ko";
+    }
+    else if(language == "Filipino"){
+      return "fil";
+    }
+    else if(language == "French"){
+      return "fr";
+    }
+    else if(language == "Italian"){
+      return "it";
+    }
+    else if(language == "Spanish"){
+      return "es";
+    }
+    else if(language == "Turkish"){
+      return "tr";
+    }
+    else if(language == "Russian"){
+      return "ru";
+    }
+    else if(language == "Armenian"){
+      return "hy";
+    }
+    else if(language == "Ukrainian"){
+      return "uk";
+    }
+    else if(language == "Swedish"){
+      return "sv";
+    }
+    return 'en';
+  }
+
+
+  void listenForPermissions() async {
     final status = await Permission.microphone.status;
     switch (status) {
       case PermissionStatus.denied:
@@ -79,7 +142,7 @@ class _SpeakerPageState extends State<SpeakerPage> {
         });
         _speech!.listen(onResult: (value) {
           setState(() {
-            _text = value.recognizedWords;
+            text = value.recognizedWords;
             if (value.hasConfidenceRating && value.confidence > 0) {
               _confidence = value.confidence;
             }
@@ -91,6 +154,9 @@ class _SpeakerPageState extends State<SpeakerPage> {
         _isListening = false;
       });
       _speech!.stop();
+      await translate(getLanguageCode(destinationLanguage), controller.text.trim().toString());
+      print(controller.text.trim().toString());
+      speak();
       if(controller.text.trim().toString() != "Press the mic to start providing messages" && controller.text.trim().toString() != ""){
         print(controller.text.trim().toString());
         Map<String,
@@ -110,6 +176,7 @@ class _SpeakerPageState extends State<SpeakerPage> {
           'Date and Time': DateTime.now().toString(),
         });
       }
+
     }
   }
 
@@ -123,6 +190,22 @@ class _SpeakerPageState extends State<SpeakerPage> {
     backgroundColor: const Color(0xFFB9CAE0),
   );
 
+    final String defaultLanguage = 'en-US';
+
+  TextToSpeech tts = TextToSpeech();
+
+  // String text = '';
+  double volume = 1; // Range: 0-1
+  double rate = 1.0; // Range: 0-2
+  double pitch = 1.0; // Range: 0-2
+  String? voice;
+
+  void speak() {
+    tts.setVolume(volume);
+    tts.setRate(rate);
+    tts.setPitch(pitch);
+    tts.speak(output);
+  }
   @override
   void initState(){
     super.initState();
@@ -184,29 +267,6 @@ class _SpeakerPageState extends State<SpeakerPage> {
           ),
         ),
 
-
-        // floatingActionButton: AvatarGlow(
-        //   animate: _isListening,
-        //   glowColor: const Color(0xff02165c),
-        //   endRadius: 1000,
-        //   duration: Duration(milliseconds: 2000),
-        //   repeatPauseDuration: Duration(milliseconds: 100),
-        //   repeat: true,
-        //   child: SizedBox(
-        //     width: 80,
-        //     height: 80,
-        //     child: FloatingActionButton(
-        //       backgroundColor: const Color(0xff02165c),
-        //       child: Icon(_isListening? Icons.mic : Icons.mic_none,
-        //         size: 40,
-        //       ),
-        //       onPressed: () async{
-        //         await _listen();
-        //       },
-        //     ),
-        //   ),
-        // ),
-
         body: Container(
             color: const Color(0xFFB9CAE0),
             child: SafeArea(
@@ -266,29 +326,83 @@ class _SpeakerPageState extends State<SpeakerPage> {
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                               child: Container(
-                                margin: EdgeInsets.symmetric(vertical: 5.0),
-                                child: TextField(
-                                  readOnly: true, // disable editing
-                                  enabled: false,
+                                  margin: EdgeInsets.symmetric(vertical: 5.0),
+                                  child: TextField(
+                                    readOnly: true, // disable editing
+                                    enabled: false,
                                     decoration: InputDecoration(
                                       contentPadding: EdgeInsets.only(bottom: 20, left: 33),
                                       floatingLabelBehavior: FloatingLabelBehavior.always,
-                                        hintStyle: TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.black,
-                                        ),
+                                      hintStyle: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.normal,
+                                        color: Color(0xff02165c),
+                                      ),
                                       border: InputBorder.none, // remove border
                                       fillColor: Colors.transparent, // remove background color
                                       filled: true, // fill the container with the background color
-                                      hintText: _text,
+                                      hintText: text,
                                     ),
-                                  controller: controller..text = '${_text.toString()}',// add hint text
-                                )
+                                    controller: controller..text = '${text.toString()}',// add hint text
+                                  )
                               ),
                             ),
                           ),
-                          Padding (padding: const EdgeInsets.fromLTRB(10, 130, 10, 10),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(75, 125, 10, 10),
+                            child: Row(
+                              children: <Widget>[
+                                const Text('Speaker Language',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: Color(0xfa34a0fa),
+                                  width: 3,
+                                ),
+                              ),
+                              child: DropdownButton(
+                                focusColor: Colors.white,
+                                iconDisabledColor: Colors.black,
+                                iconEnabledColor: Colors.black,
+                                hint: Text(
+                                  destinationLanguage, style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                ),
+                                dropdownColor: Color(0xFFB9CAE0),
+                                icon: Icon(Icons.arrow_drop_down, size: 28,),
+                                items: languages.map((String downDownStringItem){
+                                  return DropdownMenuItem(
+                                    child: Text(downDownStringItem,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    value: downDownStringItem,
+                                  );
+                                }).toList(),
+                                onChanged: (String? value){
+                                  setState(() {
+                                    destinationLanguage = value!;
+                                  });
+                                },
+                              ),
+                            ),
+
+                            ],
+                            ),
+                          ),
+                          Padding (padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                             child: ElevatedButton(
                               onPressed: () {
                                 messages();
@@ -338,7 +452,7 @@ class _SpeakerPageState extends State<SpeakerPage> {
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(0, 100, 0, 0),
+                                  padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
                                   child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
@@ -470,29 +584,6 @@ class _SpeakerPageState extends State<SpeakerPage> {
                                   ),
 
                                 )
-                                // Container(
-                                //   height: 50,
-                                //   width: 60,
-                                //   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                //   child: ElevatedButton.icon(
-                                //     onPressed: () {
-                                //     },
-                                //     icon: Icon( // <-- Icon
-                                //       Icons.alarm_add_sharp,
-                                //       size: 24.0,
-                                //       color: Colors.white,
-                                //     ),
-                                //     label: Text(''),
-                                //     style: ElevatedButton.styleFrom(
-                                //         primary: const Color(
-                                //             0xff02165c),
-                                //         padding: EdgeInsets.symmetric(horizontal: 50),
-                                //         shape: RoundedRectangleBorder(
-                                //           borderRadius: BorderRadius.circular(20),
-                                //         )
-                                //     ),// <-- Text
-                                //   ),
-                                // ),
                               ],
                             ),
                           ),
@@ -538,99 +629,99 @@ class _SpeakerPageState extends State<SpeakerPage> {
                     child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: Column(
-                          children: [
-                            Expanded(
-                              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                                stream: FirebaseFirestore.instance.collection('Speaker').snapshots(),
-                                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                                  if (!snapshot.hasData || messageList.isEmpty) {
-                                    return Container(
-                                      alignment: Alignment.center,
-                                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                      child: Text(
-                                        'No provided messages',
-                                        style: TextStyle(
-                                            fontSize: 20, fontWeight: FontWeight.bold),
-                                      ),
-                                    );
-                                  }
-                                  else{
-                                    return Column(
-                                      children: [
-                                        Align(
-                                          alignment: AlignmentDirectional(-0.3, 0),
-                                          child: Padding(
-                                            padding: EdgeInsetsDirectional.fromSTEB(
-                                                5, 5, 5, 5),
-                                            child: Container(
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  'Messages provided using the speaker:',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 20, fontWeight: FontWeight.bold),
-                                                )
+                            children: [
+                              Expanded(
+                                child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                                  stream: FirebaseFirestore.instance.collection('Speaker').snapshots(),
+                                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    if (!snapshot.hasData || messageList.isEmpty) {
+                                      return Container(
+                                        alignment: Alignment.center,
+                                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                        child: Text(
+                                          'No provided messages',
+                                          style: TextStyle(
+                                              fontSize: 20, fontWeight: FontWeight.bold),
+                                        ),
+                                      );
+                                    }
+                                    else{
+                                      return Column(
+                                        children: [
+                                          Align(
+                                            alignment: AlignmentDirectional(-0.3, 0),
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional.fromSTEB(
+                                                  5, 5, 5, 5),
+                                              child: Container(
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    'Messages provided using the speaker:',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 20, fontWeight: FontWeight.bold),
+                                                  )
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          child: ListView(
-                                            children: snapshot.data!.docs.map((document) {
-                                              var msg = document['Message'].toString();
-                                              return Center(
-                                                  child: Column(
-                                                      children: <Widget>[
-                                                        Container(
-                                                            alignment: Alignment.center,
-                                                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                                            child: Text(msg,
-                                                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
-                                                            )
-                                                        ),
-                                                      ]
-                                                  )
-                                              );
-                                            }
-                                            ).toList(),
+                                          Expanded(
+                                            child: ListView(
+                                              children: snapshot.data!.docs.map((document) {
+                                                var msg = document['Message'].toString();
+                                                return Center(
+                                                    child: Column(
+                                                        children: <Widget>[
+                                                          Container(
+                                                              alignment: Alignment.center,
+                                                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                                              child: Text(msg,
+                                                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
+                                                              )
+                                                          ),
+                                                        ]
+                                                    )
+                                                );
+                                              }
+                                              ).toList(),
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    );
-                                  }
-                                },
-                              ),
+                                        ],
+                                      );
+                                    }
+                                  },
+                                ),
 
-                            ),
-                            Row(
+                              ),
+                              Row(
                                 children: [
                                   Padding(padding: const EdgeInsets.fromLTRB(
                                       70, 30, 10, 0),
-                                        child: ElevatedButton(
-                                          child: const Text(
-                                            'OK', style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
+                                    child: ElevatedButton(
+                                      child: const Text(
+                                        'OK', style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
 
-                                          ),
-                                          ),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                            setState(() {});
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            minimumSize: Size(170, 45),
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 50),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(
-                                                  20),
-                                            ),
-                                            primary: const Color(
-                                                0xff02165c),
-                                          ),
+                                      ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        setState(() {});
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        minimumSize: Size(170, 45),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 50),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              20),
                                         ),
-                                      )
+                                        primary: const Color(
+                                            0xff02165c),
+                                      ),
+                                    ),
+                                  )
                                 ],
                               )
                             ]

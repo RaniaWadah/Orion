@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled2/EditProfile.dart';
-import 'package:untitled2/Profile/Profile.dart';
-import 'package:untitled2/GetHelp.dart';
 import 'package:untitled2/UserHome.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 

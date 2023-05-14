@@ -1,16 +1,8 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled2/GovHome.dart';
 import 'package:untitled2/GovForgotPass.dart';
-import 'package:untitled2/services/auth_service.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
@@ -77,7 +69,6 @@ class _GovLoginWidgetState extends State<GovLoginWidget> {
   TextEditingController IDController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   bool _isVisible = true;
-  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   String? val = '';
 
 
@@ -88,7 +79,6 @@ class _GovLoginWidgetState extends State<GovLoginWidget> {
 
   @override
   void dispose() {
-    // emailController.dispose();
     passwordController.dispose();
     IDController.dispose();
     super.dispose();

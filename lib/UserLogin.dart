@@ -1,12 +1,7 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:untitled2/GetXPackage/GetXHelper.dart';
-// import 'package:untitled2/UserForgotPassWidget.dart';
 import 'package:untitled2/HomePage.dart';
 import 'package:untitled2/UserForgotPass.dart';
 import 'package:untitled2/UserSignup.dart';
@@ -87,8 +82,6 @@ class _UserLoginWidgetState extends State<UserLoginWidget> {
   final formKey = GlobalKey<FormState>();
   bool _isVisible = true;
   final GetXHelper getXHelper = Get.put(GetXHelper());
-  // final firestore = FirebaseFirestore.instance;
-  // final CollectionReference usersCollection = FirebaseFirestore.instance.collection('Users');
 
   bool isNumeric(String s) {
     if (s == null) {

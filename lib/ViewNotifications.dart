@@ -92,31 +92,10 @@ class _ViewNotificationsState extends State<ViewNotifications> with AutomaticKee
     _countdownTimer?.cancel();
   }
 
-  String _getButtonLabel(bool enabled, int timeLeft) {
-    if (enabled) {
-      return 'Send';
-    }
-
-    if (timeLeft <= 0) {
-      return '00 : 00';
-    }
-
-    if (timeLeft <= 1000) {
-      return '00 : 01';
-    }
-
-    final minute = ((timeLeft / 1000) ~/ 60).toString().padLeft(2, '0');
-    final second = (((timeLeft / 1000) % 60).toInt()).toString().padLeft(
-        2, '0');
-    return '$minute : $second';
-  }
-
   @override
   void initState() {
     super.initState();
-    _init();
-    // _getColorForState();
-  }
+    _init();}
 
   @override
   void dispose() {
@@ -219,8 +198,6 @@ class _ViewNotificationsState extends State<ViewNotifications> with AutomaticKee
                                                     ButtonTimerModel>(
                                                     builder: (context,
                                                         buttonTimerModel, child) {
-                                                      // final isButtonDisabled = buttonTimerModel
-                                                      //     .isButtonDisabled(index);
                                                       print(buttonTimerModel
                                                           .getItemState(index));
                                                       if (buttonTimerModel
@@ -265,7 +242,6 @@ class _ViewNotificationsState extends State<ViewNotifications> with AutomaticKee
                                                                       'Problem Reported on ' +
                                                                           getDateTime(
                                                                               doc[index]['Date and Time']),
-                                                                      // doc[index]['Date and Time'],
                                                                       textAlign: TextAlign
                                                                           .center,
                                                                       style: TextStyle(
@@ -281,7 +257,6 @@ class _ViewNotificationsState extends State<ViewNotifications> with AutomaticKee
                                                                       'Help Requested on ' +
                                                                           getDateTime(
                                                                               doc[index]['Date and Time']),
-                                                                      // doc[index]['Date and Time'],
                                                                       textAlign: TextAlign
                                                                           .center,
                                                                       style: TextStyle(
@@ -310,11 +285,9 @@ class _ViewNotificationsState extends State<ViewNotifications> with AutomaticKee
                                                                             final isButtonDisabled = buttonTimerModel
                                                                                 .isButtonDisabled(
                                                                                 index);
-                                                                            // print(buttonTimerModel.getItemState(index));
                                                                             if (!isButtonDisabled) {
                                                                               return ElevatedButton(
                                                                                 onPressed: () async {
-                                                                                  // await _updateFlagState(index);
                                                                                   showDialog(
                                                                                     context: context,
                                                                                     builder: (
@@ -332,7 +305,6 @@ class _ViewNotificationsState extends State<ViewNotifications> with AutomaticKee
                                                                                       true,
                                                                                       ItemState
                                                                                           .inProgress);
-                                                                                  // print(buttonTimerModel.getItemState(index));
                                                                                 },
                                                                                 child: const Text(
                                                                                     'Send Drone',
@@ -415,9 +387,6 @@ class _ViewNotificationsState extends State<ViewNotifications> with AutomaticKee
                                                                                   context,
                                                                                   buttonTimerModel,
                                                                                   child) {
-                                                                                // final isButtonDisabled = buttonTimerModel
-                                                                                //     .isButtonDisabled(index);
-                                                                                // print(buttonTimerModel.getItemState(index));
                                                                                 return ElevatedButton(
                                                                                   child: Text(
                                                                                     "Full Content",
@@ -481,9 +450,6 @@ class _ViewNotificationsState extends State<ViewNotifications> with AutomaticKee
                                                                 ]
                                                             )
                                                         );
-                                                        // return  Icon(Icons.crisis_alert,
-                                                        //     color: Colors.red[500],
-                                                        // );
                                                       }
                                                       else if (buttonTimerModel
                                                           .getItemState(index) ==
@@ -572,11 +538,9 @@ class _ViewNotificationsState extends State<ViewNotifications> with AutomaticKee
                                                                             final isButtonDisabled = buttonTimerModel
                                                                                 .isButtonDisabled(
                                                                                 index);
-                                                                            // print(buttonTimerModel.getItemState(index));
                                                                             if (!isButtonDisabled) {
                                                                               return ElevatedButton(
                                                                                 onPressed: () async {
-                                                                                  // await _updateFlagState(index);
                                                                                   showDialog(
                                                                                     context: context,
                                                                                     builder: (
@@ -594,7 +558,6 @@ class _ViewNotificationsState extends State<ViewNotifications> with AutomaticKee
                                                                                       true,
                                                                                       ItemState
                                                                                           .inProgress);
-                                                                                  // print(buttonTimerModel.getItemState(index));
                                                                                 },
                                                                                 child: const Text(
                                                                                     'Send Drone',
@@ -677,9 +640,7 @@ class _ViewNotificationsState extends State<ViewNotifications> with AutomaticKee
                                                                                   context,
                                                                                   buttonTimerModel,
                                                                                   child) {
-                                                                                // final isButtonDisabled = buttonTimerModel
-                                                                                //     .isButtonDisabled(index);
-                                                                                // print(buttonTimerModel.getItemState(index));
+
                                                                                 return ElevatedButton(
                                                                                   child: Text(
                                                                                     "Full Content",
@@ -743,9 +704,6 @@ class _ViewNotificationsState extends State<ViewNotifications> with AutomaticKee
                                                                 ]
                                                             )
                                                         );
-                                                        // return  Icon(Icons.crisis_alert,
-                                                        //     color: Colors.red[500],
-                                                        // );
                                                       }
                                                      else {
                                                         return Padding(
@@ -1011,224 +969,6 @@ class _ViewNotificationsState extends State<ViewNotifications> with AutomaticKee
                                                 );
                                               }
                                           );
-                                          //     title: Row(
-                                          //       children: [
-                                          //         Expanded(
-                                          //             child: StatefulBuilder(
-                                          //                 builder: (BuildContext context, StateSetter setState) {
-                                          //                   return Consumer <ButtonTimerModel>(
-                                          //                       builder: (context, buttonTimerModel, child) {
-                                          //                         if (buttonTimerModel.getItemState(index) == ItemState.notSolved) {
-                                          //                           return
-                                          //                             Text('Not Resolved',
-                                          //                               textAlign: TextAlign.left,
-                                          //                               style: TextStyle(
-                                          //                                 fontSize: 11,
-                                          //                                 fontWeight: FontWeight.bold,
-                                          //                                 color: Colors.red[500],
-                                          //                               ),
-                                          //                             );
-                                          //                         }
-                                          //                         else if(buttonTimerModel.getItemState(index) == ItemState.inProgress){
-                                          //                           return
-                                          //                             Text('In Progress',
-                                          //                               textAlign: TextAlign.left,
-                                          //                               style: TextStyle(
-                                          //                                 fontSize: 11,
-                                          //                                 fontWeight: FontWeight.bold,
-                                          //                                 color: Colors.orange,
-                                          //                               ),
-                                          //                             );
-                                          //                         }
-                                          //                         else {
-                                          //                           return
-                                          //                             Text('Resolved',
-                                          //                               textAlign: TextAlign.left,
-                                          //                               style: TextStyle(
-                                          //                                 fontSize: 11,
-                                          //                                 fontWeight: FontWeight.bold,
-                                          //                                 color: Colors.green,
-                                          //                               ),
-                                          //                             );
-                                          //                         }
-                                          //                       }
-                                          //                   );
-                                          //                 }
-                                          //             )
-                                          //         ),
-                                          //         Expanded(child:
-                                          //         doc[index]['Title'] ==
-                                          //             'Report a Problem' ?
-                                          //         Text('Problem Reported on ' +
-                                          //             getDateTime(doc[index]['Date and Time']),
-                                          //           // doc[index]['Date and Time'],
-                                          //           textAlign: TextAlign.left,
-                                          //           style: TextStyle(
-                                          //             fontSize: 14,
-                                          //             fontWeight: FontWeight.bold,
-                                          //             color: Colors.black,
-                                          //           ),
-                                          //         ) :
-                                          //         Text('Help Requested on ' +
-                                          //             getDateTime(doc[index]['Date and Time']),
-                                          //           // doc[index]['Date and Time'],
-                                          //           textAlign: TextAlign.left,
-                                          //           style: TextStyle(
-                                          //             fontSize: 14,
-                                          //             fontWeight: FontWeight.bold,
-                                          //             color: Colors.black,
-                                          //           ),
-                                          //         ),
-                                          //         ),
-                                          //       ]
-                                          //     ),
-                                          //     trailing: Container(
-                                          //       width: 220,
-                                          //       child: Row(
-                                          //         children: [
-                                          //           Expanded(
-                                          //             child:
-                                          //             StatefulBuilder(
-                                          //               builder: (
-                                          //                   BuildContext context,
-                                          //                   StateSetter setState) {
-                                          //                 return Consumer <ButtonTimerModel>(
-                                          //                   builder: (context, buttonTimerModel, child) {
-                                          //                     final isButtonDisabled = buttonTimerModel.isButtonDisabled(index);
-                                          //                     // print(buttonTimerModel.getItemState(index));
-                                          //                     if (!isButtonDisabled) {
-                                          //                       return ElevatedButton(
-                                          //                         onPressed: () async {
-                                          //                           // await _updateFlagState(index);
-                                          //                           showDialog(
-                                          //                             context: context,
-                                          //                             builder: (
-                                          //                                 context) {
-                                          //                               return AlertDialog(
-                                          //                                 content: Text(
-                                          //                                   'User location has been successfully sent to the drone to be flown',
-                                          //                                 ),
-                                          //                               );
-                                          //                             },
-                                          //                           );
-                                          //                           buttonTimerModel.setButtonDisabled(index, true, ItemState.inProgress);
-                                          //                           // print(buttonTimerModel.getItemState(index));
-                                          //                         },
-                                          //                         child: const Text(
-                                          //                             'Send Location',
-                                          //                             textAlign: TextAlign
-                                          //                                 .center),
-                                          //                         style: ElevatedButton
-                                          //                             .styleFrom(
-                                          //                           primary: const Color(
-                                          //                               0xff02165c),
-                                          //                           shape: RoundedRectangleBorder(
-                                          //                             borderRadius: BorderRadius
-                                          //                                 .circular(
-                                          //                                 20),
-                                          //                           ),
-                                          //                         ),
-                                          //                       );
-                                          //                     } else {
-                                          //                       return ElevatedButton(
-                                          //                         onPressed: () async {
-                                          //                           null;
-                                          //                         },
-                                          //                         child: Countdown(
-                                          //                           seconds: 600,
-                                          //                           build: (_,
-                                          //                               double time) {
-                                          //                             int minutes = time ~/
-                                          //                                 60;
-                                          //                             int seconds = time
-                                          //                                 .toInt() %
-                                          //                                 60;
-                                          //                             return Text(
-                                          //                               '$minutes : ${seconds
-                                          //                                   .toString()
-                                          //                                   .padLeft(
-                                          //                                   2,
-                                          //                                   '0')}',
-                                          //                               textAlign: TextAlign
-                                          //                                   .center,
-                                          //                             );
-                                          //                           },
-                                          //                           interval: const Duration(
-                                          //                               seconds: 1),
-                                          //                           onFinished: () {
-                                          //                             buttonTimerModel
-                                          //                                 .setButtonDisabled(
-                                          //                                 index,
-                                          //                                 false, ItemState.inProgress);
-                                          //                           },
-                                          //                         ),
-                                          //                         style: ElevatedButton
-                                          //                             .styleFrom(
-                                          //                           primary: Colors
-                                          //                               .grey,
-                                          //                           shape: RoundedRectangleBorder(
-                                          //                             borderRadius: BorderRadius
-                                          //                                 .circular(
-                                          //                                 20),
-                                          //                           ),
-                                          //                         ),
-                                          //                       );
-                                          //                     }
-                                          //                   },
-                                          //                 );
-                                          //               },
-                                          //             ),
-                                          //           ),
-                                          //           SizedBox(width: 10),
-                                          //           Expanded(
-                                          //             child: StatefulBuilder(
-                                          //                 builder: (BuildContext context, StateSetter setState) {
-                                          //                   return Consumer <ButtonTimerModel>(
-                                          //                       builder: (context, buttonTimerModel, child) {
-                                          //                         // final isButtonDisabled = buttonTimerModel
-                                          //                         //     .isButtonDisabled(index);
-                                          //                         // print(buttonTimerModel.getItemState(index));
-                                          //                         return ElevatedButton(
-                                          //                           child: Text("Full Content",
-                                          //                             textAlign: TextAlign
-                                          //                                 .center,
-                                          //                           ),
-                                          //                           style: ElevatedButton
-                                          //                               .styleFrom(
-                                          //                             primary: const Color(
-                                          //                                 0xff02165c),
-                                          //                             shape: RoundedRectangleBorder(
-                                          //                               borderRadius: BorderRadius
-                                          //                                   .circular(20),
-                                          //                             ),
-                                          //                           ),
-                                          //                           onPressed: () async{
-                                          //                             final state = Provider.of<ButtonTimerModel>(context, listen: false);
-                                          //                             print(buttonTimerModel.getItemState(index));
-                                          //                             bool solved = await Navigator.push(
-                                          //                                 context,
-                                          //                                 MaterialPageRoute(
-                                          //                                     builder: (context) =>
-                                          //                                         details(index: index, isDisabled: buttonTimerModel.isButtonDisabled(index), itemState: state.getItemState(index))
-                                          //                                 )
-                                          //                             );
-                                          //
-                                          //                             if(solved == true){
-                                          //                               buttonTimerModel.setButtonDisabled(index, true, ItemState.solved);
-                                          //                             }
-                                          //                           },
-                                          //                         );
-                                          //                       }
-                                          //                   );
-                                          //                 }
-                                          //             ),
-                                          //
-                                          //           ),
-                                          //         ],
-                                          //       ),
-                                          //     ),
-                                          //   );
-                                          // }
                                         }
                                         ),
                                     );
@@ -1498,11 +1238,6 @@ class _detailsState extends State<details> {
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 100, 0, 40),
                   child:
-                  // StatefulBuilder(
-                  //     builder: (BuildContext context, StateSetter setState) {
-                  //       return Consumer <ButtonTimerModel>(
-                  //           builder: (context, buttonTimerModel, child) {
-                  //             print(buttonTimerModel.getItemState(index));
                   Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -1561,7 +1296,6 @@ class _detailsState extends State<details> {
                                   primary: const Color(
                                       0xff02165c),
                                   padding: EdgeInsets.fromLTRB(16, 13, 20, 20),
-                                  // padding: EdgeInsets.symmetric(horizontal: 50),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   )
@@ -1619,7 +1353,6 @@ class _detailsState extends State<details> {
                                   primary: const Color(
                                       0xff02165c),
                                   padding: EdgeInsets.fromLTRB(16, 13, 20, 20),
-                                  // padding: EdgeInsets.symmetric(horizontal: 50),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   )
@@ -1677,7 +1410,6 @@ class _detailsState extends State<details> {
                                   primary: const Color(
                                       0xff02165c),
                                   padding: EdgeInsets.fromLTRB(13.5, 12, 20, 20),
-                                  // padding: EdgeInsets.symmetric(horizontal: 50),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   )
@@ -1735,7 +1467,6 @@ class _detailsState extends State<details> {
                                   primary: const Color(
                                       0xff02165c),
                                   padding: EdgeInsets.fromLTRB(13.5, 10, 20, 20),
-                                  // padding: EdgeInsets.symmetric(horizontal: 50),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   )
@@ -1792,7 +1523,6 @@ class _detailsState extends State<details> {
                                   primary: const Color(
                                       0xff02165c),
                                   padding: EdgeInsets.fromLTRB(14, 11, 20, 20),
-                                  // padding: EdgeInsets.symmetric(horizontal: 50),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   )

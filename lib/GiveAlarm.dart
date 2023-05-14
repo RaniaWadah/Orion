@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:untitled2/CheckRecordings.dart';
 import 'package:untitled2/GovHome.dart';
 import 'package:untitled2/Identify.dart';
@@ -46,9 +47,6 @@ class GiveAlarm extends StatelessWidget {
         ),
         body: const GiveAlarmWidget(),
       ),
-      // routes: {
-      //   "View": (_) => ViewNotifications(),
-      // },
     );
   }
 }
@@ -67,12 +65,8 @@ class _GiveAlarmWidgetState extends State<GiveAlarmWidget> {
   String? mtoken = ' ';
   late DatabaseReference db;
   bool isSwitched = false;
-  // String? url;
-  //
   var Data;
-  //
-  // String QueryText='QUERY'; // Added QueryText to save String value decoded
-
+  AudioPlayer? player;
   final ButtonStyle flatButtonStyle = TextButton.styleFrom(
     primary: Colors.black,
     minimumSize: Size(350, 45),
@@ -88,10 +82,23 @@ class _GiveAlarmWidgetState extends State<GiveAlarmWidget> {
     return Response.body;
   }
 
+  Future<void> playSound() async {
+    await player!.setAsset('audio/alarm.mp3');
+    player!.play();
+    await player!.setLoopMode(LoopMode.all);
+  }
+
+  Future<void> stopSound() async {
+    player!.stop();
+  }
+
+
+
   @override
   void initState(){
     super.initState();
     db = FirebaseDatabase.instance.ref().child('Alarm');
+    player = AudioPlayer();
 
   }
   @override
@@ -115,6 +122,7 @@ class _GiveAlarmWidgetState extends State<GiveAlarmWidget> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             isSwitched ?
+
                             Expanded(
                               child: Align(
                                 alignment: AlignmentDirectional(-0.3, 0),
@@ -169,6 +177,7 @@ class _GiveAlarmWidgetState extends State<GiveAlarmWidget> {
                                     activeColor: const Color(0xff02165c),
                                     onChanged: (value) async{
                                       if(value == true){
+                                        await playSound();
                                         String body = "Alarm system has been turned on";
                                         Map<String,
                                             dynamic> Notifications = {
@@ -186,6 +195,9 @@ class _GiveAlarmWidgetState extends State<GiveAlarmWidget> {
                                           'Date and Time': DateTime.now().toString(),
                                         });
                                       }
+                                      else{
+                                        await stopSound();
+                                      }
                                       setState(() {
                                         isSwitched = value;
                                       });
@@ -195,67 +207,6 @@ class _GiveAlarmWidgetState extends State<GiveAlarmWidget> {
                               ),
                             ]),
                       ),
-                      //               Data = await Getdata(url);
-                      //
-                      //               var DecodedData = jsonDecode(Data);
-                      // Column (
-                      //
-                      //   children: <Widget>[
-                      //     Padding(
-                      //
-                      //       padding: const EdgeInsets.all(10.0),
-                      //
-                      //       child: TextField(
-                      //
-                      //         onChanged: (value) {
-                      //
-                      //           url = 'http://10.0.2.2:5000//api?Query=' + value.toString();
-                      //
-                      //         },
-                      //
-                      //         decoration: InputDecoration(
-                      //
-                      //             hintText: 'Search Anything Here',
-                      //
-                      //             suffixIcon: GestureDetector(onTap: ()async{
-                      //
-                      //               Data = await Getdata(url);
-                      //
-                      //               var DecodedData = jsonDecode(Data);
-                      //
-                      //               setState(() {
-                      //
-                      //                 QueryText = DecodedData['Query'];
-                      //
-                      //               });
-                      //
-                      //             },
-                      //
-                      //                 child: Icon(Icons.search))
-                      //
-                      //         ),// InputDecoration
-                      //
-                      //       ), // TextField
-                      //
-                      //     ), //Padding
-                      //
-                      //     Padding(
-                      //
-                      //       padding: const EdgeInsets.all(10.0),
-                      //
-                      //       child: Text(
-                      //
-                      //         QueryText,
-                      //
-                      //         style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
-                      //
-                      //       ),//Text
-                      //
-                      //     ), // Padding
-                      //
-                      //   ], // <Widget>[]
-                      //
-                      // ), // Column
                             Padding (padding: const EdgeInsets.fromLTRB(5, 5, 10, 10),
                               child: ElevatedButton(
                                 onPressed: () {
