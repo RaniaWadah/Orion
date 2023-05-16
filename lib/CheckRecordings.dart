@@ -1,8 +1,323 @@
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:video_player/video_player.dart';
+// import 'package:flutter/material.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+//
+//
+// class CheckRecordings extends StatelessWidget {
+//   const CheckRecordings({Key? key}) : super(key: key);
+//
+//
+//   static const String _title = 'Orion';
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: _title,
+//       // navigatorKey: navigatorKey,
+//       home: Scaffold(
+//         appBar: PreferredSize(
+//         preferredSize: Size.fromHeight(70.0),
+//     child: AppBar(
+//           title: Container(
+//             width: 200,
+//             alignment: Alignment.center,
+//             child: Image.asset('images/Orion.png'),
+//           ),
+//           backgroundColor: const Color(0xFFB9CAE0),
+//           elevation: 0.0,
+//           titleSpacing: 10.0,
+//           centerTitle: true,
+//           leading: InkWell(
+//             onTap: () {
+//               Navigator.pop(context);
+//             },
+//             child: Icon(
+//               Icons.arrow_back,
+//               color: Colors.black,
+//             ),
+//           ),
+//         ),
+//         ),
+//         body: const CheckRecordingsWidget(),
+//       ),
+//     );
+//   }
+// }
+//
+// class CheckRecordingsWidget extends StatefulWidget {
+//
+//   const CheckRecordingsWidget({Key? key}) : super(key: key);
+//
+//   @override
+//   State<CheckRecordingsWidget> createState() => _CheckRecordingsWidgetState();
+// }
+// class _CheckRecordingsWidgetState extends State<CheckRecordingsWidget> {
+//   VideoPlayerController? _controller;
+//   final firestore = FirebaseFirestore.instance;
+//   final cUser = FirebaseAuth.instance;
+//
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _controller = VideoPlayerController();
+//   }
+//
+//   @override
+//   void dispose() {
+//     super.dispose();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       color: const Color(0xFFB9CAE0),
+//       child: Scaffold(
+//         backgroundColor: const Color(0xFFB9CAE0),
+//         body: Column(
+//           children: [
+//             Padding(
+//                 padding: const EdgeInsets.fromLTRB(10, 40, 10, 10),
+//                 child: Center(child: Text(
+//                   'Recordings',
+//                   style: TextStyle(
+//                     fontWeight: FontWeight.bold,
+//                     fontSize: 25,
+//                   ),
+//                 )
+//                 )
+//             ),
+//             Expanded(
+//               child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+//                 stream: FirebaseFirestore.instance.collection('Recordings').snapshots(),
+//
+//                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+//                   if (!snapshot.hasData) {
+//                     return Center(
+//                       child: CircularProgressIndicator(),
+//                     );
+//                   }
+//
+//                   return ListView(
+//                     children: snapshot.data!.docs.map((document) {
+//                       var url = document['Video'].toString();
+//                       VideoPlayerController.network(url);
+//                       // YoutubePlayerController _controller = YoutubePlayerController(
+//                       //     initialVideoId: YoutubePlayer.convertUrlToId(url)!,
+//                       //     flags: const YoutubePlayerFlags(
+//                       //         useHybridComposition: false,
+//                       //         mute: false,
+//                       //         autoPlay: false,
+//                       //         disableDragSeek: true,
+//                       //         loop: false,
+//                       //         isLive: false,
+//                       //         forceHD: false,
+//                       //         enableCaption: false,
+//                       //         showLiveFullscreenButton: false,
+//                       //     ),
+//                       //   );
+//                       // YoutubePlayerController _controller = YoutubePlayerController(
+//                       //   initialVideoId: YoutubePlayer.convertUrlToId(url)!,
+//                       //   flags: YoutubePlayerFlags(
+//                       //     autoPlay: false,
+//                       //     mute: true,
+//                       //     disableDragSeek: false,
+//                       //     loop: false,
+//                       //     isLive: false,
+//                       //     forceHD: false,
+//                       //   ),
+//                       // );
+//                       return Center(
+//                           child: Column(
+//                               children: <Widget>[
+//                                 Padding(
+//                                     padding: EdgeInsets.only(top: 20),
+//                                     child: Text('Date and Time: '+ document['Date and Time'].toString(),
+//                                       style: TextStyle(
+//                                         fontSize: 15,
+//                                         fontWeight: FontWeight.bold,
+//                                         color: Colors.black,
+//                                       ),
+//                                     )
+//                                 ),
+//                                 Padding(
+//                                     padding: EdgeInsets.only(bottom: 5),
+//                                     child: Text('Location: '+ document['Location'].toString(),
+//                                       style: TextStyle(
+//                                         fontSize: 15,
+//                                         fontWeight: FontWeight.bold,
+//                                         color: Colors.black,
+//                                       ),
+//                                     )
+//                                 ),
+//                                 Container(
+//                                   width: MediaQuery.of(context).size.width / 1.2,
+//                                   child:
+//                                   VideoPlayer(_controller!),
+//                                 ),
+//                               ]
+//                           )
+//                       );
+//                     }
+//                     ).toList(),
+//                   );
+//                 },
+//               ),
+//
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+//
+//
+// // import 'package:flutter/cupertino.dart';
+// // import 'package:flutter/material.dart';
+// // import 'package:video_player/video_player.dart';
+// // import 'package:firebase_core/firebase_core.dart';
+// // import 'package:cloud_firestore/cloud_firestore.dart';
+// //
+// //
+// // class CheckRecordings extends StatelessWidget {
+// //   // Create the initialization Future outside of build
+// //   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+// //
+// //   // This widget is the root of your application.
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     return FutureBuilder(
+// //         future: _initialization,
+// //         builder: (context, snapshot) {
+// //           // Check for error
+// //           if (snapshot.hasError) {
+// //             print(snapshot.error);
+// //             return Center(
+// //               child: Container(
+// //                 child: Text(
+// //                   "Something went wrong",
+// //                   textDirection: TextDirection.ltr,
+// //                 ),
+// //               ),
+// //             );
+// //           }
+// //
+// //           //Once complete, show your application
+// //           if (snapshot.connectionState == ConnectionState.done) {
+// //             return MaterialApp(
+// //               title: 'Flutter Demo',
+// //               home: CheckRecordingsScreen(),
+// //             );
+// //           }
+// //
+// //           return CircularProgressIndicator();
+// //         });
+// //   }
+// // }
+// //
+// // class CheckRecordingsScreen extends StatefulWidget {
+// //
+// //   @override
+// //   _CheckRecordingsScreenState createState() => _CheckRecordingsScreenState();
+// // }
+// //
+// // class _CheckRecordingsScreenState extends State<CheckRecordingsScreen> {
+// //   VideoPlayerController? _controller;
+// //   Future<void>? _initializeVideoPlayerFuture;
+// //   FirebaseFirestore firestore = FirebaseFirestore.instance;
+// //   String videoUrl =
+// //       'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4';
+// //
+// //   @override
+// //   void initState() {
+// //     firestore.collection("Recordings").get().then((QuerySnapshot querySnapshot) => {
+// //     querySnapshot.docs.forEach((doc) {
+// //     videoUrl = doc["Video"];
+// //     _controller = VideoPlayerController.network(videoUrl);
+// //     _initializeVideoPlayerFuture = _controller!.initialize().then((_) {
+// //     setState(() {});
+// //     });
+// //     })
+// //     });
+// //     super.initState();
+// //   }
+// //
+// //   @override
+// //   void dispose() {
+// //     _controller!.dispose();
+// //     super.dispose();
+// //   }
+// //
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     return Scaffold(
+// //       appBar: PreferredSize(
+// //         preferredSize: Size.fromHeight(70.0),
+// //         child: AppBar(
+// //           title: Container(
+// //             width: 200,
+// //             alignment: Alignment.center,
+// //             child: Image.asset('images/Orion.png'),
+// //           ),
+// //           backgroundColor: const Color(0xFFB9CAE0),
+// //           elevation: 0.0,
+// //           titleSpacing: 10.0,
+// //           centerTitle: true,
+// //           leading: InkWell(
+// //             onTap: () {
+// //               Navigator.pop(context);
+// //             },
+// //             child: Icon(
+// //               Icons.arrow_back,
+// //               color: Colors.black,
+// //             ),
+// //           ),
+// //         ),
+// //         ),
+// //       body: Container(
+// //         color: const Color(0xFFB9CAE0),
+// //         child: FutureBuilder(
+// //           future: _initializeVideoPlayerFuture,
+// //           builder: (context, snapshot) {
+// //             if (snapshot.connectionState == ConnectionState.done) {
+// //               return Column(
+// //                 children: [
+// //                   AspectRatio(
+// //                     aspectRatio: _controller!.value.aspectRatio,
+// //                     child: VideoPlayer(_controller!),
+// //                   ),
+// //                 ],
+// //               );
+// //             } else {
+// //               return Center(child: CircularProgressIndicator());
+// //             }
+// //           },
+// //         ),
+// //       ),
+// //       // floatingActionButton: FloatingActionButton(
+// //       //   onPressed: () {
+// //       //     setState(() {
+// //       //       if (_controller!.value.isPlaying) {
+// //       //         _controller!.pause();
+// //       //       } else {
+// //       //         _controller!.play();
+// //       //       }
+// //       //     });
+// //       //   },
+// //       //   child: Icon(
+// //       //     _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
+// //       //   ),
+// //       // ),
+// //     );
+// //   }
+// // }
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled2/GovHome.dart';
 import 'package:video_player/video_player.dart';
-
 
 class CheckRecordings extends StatelessWidget {
   const CheckRecordings({
@@ -12,6 +327,8 @@ class CheckRecordings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      // navigatorKey: navigatorKey,
       home: Scaffold(
         appBar: PreferredSize(
         preferredSize: Size.fromHeight(70.0),

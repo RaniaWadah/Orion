@@ -18,10 +18,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart' as Path;
-import 'package:untitled2/Track.dart';
+import 'package:untitled2/StartRecording.dart';
 
-class StartRecording extends StatelessWidget {
-  const StartRecording({Key? key}) : super(key: key);
+class Track extends StatelessWidget {
+  const Track({Key? key}) : super(key: key);
 
   static const String _title = 'Orion';
 
@@ -55,20 +55,20 @@ class StartRecording extends StatelessWidget {
             ),
           ),
         ),
-        body: const StartRecordingWidget(),
+        body: const TrackWidget(),
       ),
     );
   }
 }
 
-class StartRecordingWidget extends StatefulWidget {
-  const StartRecordingWidget({Key? key}) : super(key: key);
+class TrackWidget extends StatefulWidget {
+  const TrackWidget({Key? key}) : super(key: key);
 
   @override
-  State<StartRecordingWidget> createState() => _StartRecordingWidgetState();
+  State<TrackWidget> createState() => _TrackWidgetState();
 }
 
-class _StartRecordingWidgetState extends State<StartRecordingWidget> {
+class _TrackWidgetState extends State<TrackWidget> {
   Future getData(url) async {
     http.Response Response = await http.get(Uri.parse(url));
     return Response.body;
@@ -87,8 +87,7 @@ class _StartRecordingWidgetState extends State<StartRecordingWidget> {
   bool isRecording = false;
   XFile? videoFile;
   File? vid;
-  var Data1;
-  var Data2;
+  var Data;
   final ButtonStyle flatButtonStyle = TextButton.styleFrom(
     primary: Colors.black,
     minimumSize: Size(350, 45),
@@ -99,117 +98,117 @@ class _StartRecordingWidgetState extends State<StartRecordingWidget> {
     backgroundColor: const Color(0xFFB9CAE0),
   );
 
-  selectVideoFromCamera() async{
-    if (Platform.isAndroid) {
-      final androidInfo = await DeviceInfoPlugin().androidInfo;
-      if (androidInfo.version.sdkInt <= 33) {
-        await Permission.storage.request();
-        var permissionStatus = await Permission.storage.status;
-
-        if(permissionStatus.isGranted){
-          XFile? file = await ImagePicker().pickVideo(source: ImageSource.camera);
-          if(file != null){
-            setState(() {
-              videoFile = file;
-            });
-            vid = File(file.path);
-            uploadFile();
-            isRecorded = true;
-            _isVisible = true;
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    content: Text('Video has been recorded'),
-                  );
-                }
-            );
-          }
-          else{
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    content: Text('No video has been recorded'),
-                  );
-                }
-            );
-            return '';
-          }
-        }
-      }  else {
-        await Permission.photos.request();
-        var permissionStatus = await Permission.photos.status;
-
-        if(permissionStatus.isGranted){
-          XFile? file = await ImagePicker().pickVideo(source: ImageSource.camera);
-          if(file != null){
-            setState(() {
-              videoFile = file;
-            });
-            vid = File(file.path);
-            uploadFile();
-            isRecorded = true;
-            _isVisible = true;
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    content: Text('Video has been recorded'),
-                  );
-                }
-            );
-          }
-          else{
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    content: Text('No video has been recorded'),
-                  );
-                }
-            );
-            return '';
-          }
-        }
-      }
-    }
-
-  }
-
-  Future<void> uploadFile() async {
-    if (vid == null) return;
-    final fileName = Path.basename(vid!.path);
-    final destination = 'files/$fileName';
-    try {
-      final Reference ref = FirebaseStorage.instance.ref(destination).child('file/');
-      final TaskSnapshot uploadTask = await ref.putFile(vid!);
-      final String downloadUrl = await uploadTask.ref.getDownloadURL();
-
-      final govSnapshot = await FirebaseFirestore.instance.collection('government').
-      doc(FirebaseAuth.instance.currentUser!.uid).get();
-                Map<String,
-                    dynamic> Recordings = {
-                  'Date and Time': DateTime.now().toString(),
-                  'Video': downloadUrl,
-                  'Location': govSnapshot.data()!['Location'],
-                };
-                db.push().set(Recordings);
-
-                CollectionReference userRef = FirebaseFirestore
-                    .instance.collection(
-                    'Recordings');
-                userRef.doc()
-                    .set({
-                  'Date and Time': DateTime.now().toString(),
-                  'Video': downloadUrl,
-                  'Location': govSnapshot.data()!['Location'],
-                });
-
-    } catch (e) {
-      print('error occurred');
-    }
-  }
+  // selectVideoFromCamera() async{
+  //   if (Platform.isAndroid) {
+  //     final androidInfo = await DeviceInfoPlugin().androidInfo;
+  //     if (androidInfo.version.sdkInt <= 33) {
+  //       await Permission.storage.request();
+  //       var permissionStatus = await Permission.storage.status;
+  //
+  //       if(permissionStatus.isGranted){
+  //         XFile? file = await ImagePicker().pickVideo(source: ImageSource.camera);
+  //         if(file != null){
+  //           setState(() {
+  //             videoFile = file;
+  //           });
+  //           vid = File(file.path);
+  //           uploadFile();
+  //           isRecorded = true;
+  //           _isVisible = true;
+  //           showDialog(
+  //               context: context,
+  //               builder: (context) {
+  //                 return AlertDialog(
+  //                   content: Text('Video has been recorded'),
+  //                 );
+  //               }
+  //           );
+  //         }
+  //         else{
+  //           showDialog(
+  //               context: context,
+  //               builder: (context) {
+  //                 return AlertDialog(
+  //                   content: Text('No video has been recorded'),
+  //                 );
+  //               }
+  //           );
+  //           return '';
+  //         }
+  //       }
+  //     }  else {
+  //       await Permission.photos.request();
+  //       var permissionStatus = await Permission.photos.status;
+  //
+  //       if(permissionStatus.isGranted){
+  //         XFile? file = await ImagePicker().pickVideo(source: ImageSource.camera);
+  //         if(file != null){
+  //           setState(() {
+  //             videoFile = file;
+  //           });
+  //           vid = File(file.path);
+  //           uploadFile();
+  //           isRecorded = true;
+  //           _isVisible = true;
+  //           showDialog(
+  //               context: context,
+  //               builder: (context) {
+  //                 return AlertDialog(
+  //                   content: Text('Video has been recorded'),
+  //                 );
+  //               }
+  //           );
+  //         }
+  //         else{
+  //           showDialog(
+  //               context: context,
+  //               builder: (context) {
+  //                 return AlertDialog(
+  //                   content: Text('No video has been recorded'),
+  //                 );
+  //               }
+  //           );
+  //           return '';
+  //         }
+  //       }
+  //     }
+  //   }
+  //
+  // }
+  //
+  // Future<void> uploadFile() async {
+  //   if (vid == null) return;
+  //   final fileName = Path.basename(vid!.path);
+  //   final destination = 'files/$fileName';
+  //   try {
+  //     final Reference ref = FirebaseStorage.instance.ref(destination).child('file/');
+  //     final TaskSnapshot uploadTask = await ref.putFile(vid!);
+  //     final String downloadUrl = await uploadTask.ref.getDownloadURL();
+  //
+  //     final govSnapshot = await FirebaseFirestore.instance.collection('government').
+  //     doc(FirebaseAuth.instance.currentUser!.uid).get();
+  //     Map<String,
+  //         dynamic> Recordings = {
+  //       'Date and Time': DateTime.now().toString(),
+  //       'Video': downloadUrl,
+  //       'Location': govSnapshot.data()!['Location'],
+  //     };
+  //     db.push().set(Recordings);
+  //
+  //     CollectionReference userRef = FirebaseFirestore
+  //         .instance.collection(
+  //         'Recordings');
+  //     userRef.doc()
+  //         .set({
+  //       'Date and Time': DateTime.now().toString(),
+  //       'Video': downloadUrl,
+  //       'Location': govSnapshot.data()!['Location'],
+  //     });
+  //
+  //   } catch (e) {
+  //     print('error occurred');
+  //   }
+  // }
 
   @override
   void initState(){
@@ -248,26 +247,21 @@ class _StartRecordingWidgetState extends State<StartRecordingWidget> {
                                       setState(() {
                                         _isTaskComplete = true;
                                       });
-                                      Data1 = await getData('http://192.168.8.105:5000/record');
-                                      var DecodedData1 = jsonDecode(Data1);
-                                      print(DecodedData1);
-
-                                      Data2 = await getData('http://192.168.8.105:5000/train');
-                                      var DecodedData2 = jsonDecode(Data2);
-                                      print(DecodedData2);
-
+                                      Data = await getData('http://192.168.8.105:5000/track');
+                                      var DecodedData = jsonDecode(Data);
+                                      print(DecodedData);
                                     },
                                     child: Icon( // <-- Icon
-                                      Icons.video_camera_back_sharp,
+                                      Icons.location_searching,
                                       size: 38.0,
                                       color: Colors.white,
                                     ),
                                     style: ElevatedButton.styleFrom(
-                                        primary: const Color(
-                                            0xff02165c),
-                                        padding: EdgeInsets.fromLTRB(18.5, 24, 20, 20),
-                                        // padding: EdgeInsets.symmetric(horizontal: 50),
-                                        shape: CircleBorder(),
+                                      primary: const Color(
+                                          0xff02165c),
+                                      padding: EdgeInsets.fromLTRB(18.5, 24, 20, 20),
+                                      // padding: EdgeInsets.symmetric(horizontal: 50),
+                                      shape: CircleBorder(),
                                     ), // <-- Text
                                   ),
                                 ),
@@ -304,31 +298,31 @@ class _StartRecordingWidgetState extends State<StartRecordingWidget> {
                       // ):
                       //     Container(),
                       Column(
-                        children: [
-                          Padding (padding: const EdgeInsets.fromLTRB(3, 20, 10, 10),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                    context, MaterialPageRoute(
-                                    builder: (context) =>
-                                        GovHome()));
-                              },
-                              child: const Text('Home', style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              ),
-                              style: ElevatedButton.styleFrom(primary: const Color(
-                                  0xff02165c), minimumSize: Size(205, 45),
-                                  padding: EdgeInsets.symmetric(horizontal: 50),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  )
+                          children: [
+                            Padding (padding: const EdgeInsets.fromLTRB(3, 20, 10, 10),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                      context, MaterialPageRoute(
+                                      builder: (context) =>
+                                          GovHome()));
+                                },
+                                child: const Text('Home', style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                ),
+                                style: ElevatedButton.styleFrom(primary: const Color(
+                                    0xff02165c), minimumSize: Size(205, 45),
+                                    padding: EdgeInsets.symmetric(horizontal: 50),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    )
+                                ),
                               ),
                             ),
-                          ),
-                        ]
+                          ]
                       ),
 
                       IconTheme(
@@ -355,10 +349,10 @@ class _StartRecordingWidgetState extends State<StartRecordingWidget> {
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (context) => const Track()));
+                                                      builder: (context) => const StartRecording()));
                                             },
                                             child: Icon( // <-- Icon
-                                              Icons.location_searching,
+                                              Icons.video_camera_back_sharp,
                                               size: 30.0,
                                               color: Colors.white,
                                             ),

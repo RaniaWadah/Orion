@@ -28,6 +28,7 @@ class _GovForgotPassWidgetState extends State<GovForgotPassWidget> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: _title,
       home: Scaffold(
         appBar: PreferredSize(

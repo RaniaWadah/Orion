@@ -15,6 +15,7 @@ import 'package:untitled2/GiveAlarm.dart';
 import 'package:untitled2/Identify.dart';
 import 'package:untitled2/ProvideSafetyMessage.dart';
 import 'package:untitled2/StartRecording.dart';
+import 'package:untitled2/Track.dart';
 
 enum ItemState {
   solved,
@@ -108,6 +109,7 @@ class _ViewNotificationsState extends State<ViewNotifications> with AutomaticKee
   Widget build(BuildContext context) {
     super.build(context);
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: PreferredSize(
         preferredSize: Size.fromHeight(70.0),
@@ -1232,308 +1234,373 @@ class _detailsState extends State<details> {
           ),
           IconTheme(
             data: IconThemeData(size: 22.0, color: Colors.white),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 100, 0, 40),
-                  child:
-                  Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Padding(
-                          padding:
-                          EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                          child: Container(
-                            width: 70,
-                            height: 55,
-                            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if(disabled!){
-                                  print(state);
-                                  if(state == ItemState.notSolved){
-                                    final iState = Provider.of<ButtonTimerModel>(context, listen: false);
-                                    iState.setButtonDisabled(i!, disabled!, ItemState.notSolved);
-                                    setState(() {
-                                      state = iState.getItemState(i!);
-                                      isSolved = false;
-                                    });
-
-                                    // ItemState.notSolved;
-                                  }
-                                  else if(state == ItemState.inProgress){
-                                    final iState = Provider.of<ButtonTimerModel>(context, listen: false);
-                                    iState.setButtonDisabled(i!, disabled!, ItemState.solved);
-                                    setState(() {
-                                      state = iState.getItemState(i!);
-                                      isSolved = true;
-                                    });
-
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 100, 0, 40),
+                    child:
+                    Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding:
+                            EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                            child: Container(
+                              width: 70,
+                              height: 55,
+                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if(disabled!){
                                     print(state);
-                                  }
-                                  else if(state == ItemState.solved){
-                                    final iState = Provider.of<ButtonTimerModel>(context, listen: false);
-                                    iState.setButtonDisabled(i!, disabled!, ItemState.solved);
-                                    setState(() {
-                                      state = iState.getItemState(i!);
-                                      isSolved = true;
-                                    });
+                                    if(state == ItemState.notSolved){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.notSolved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = false;
+                                      });
 
-                                  }
-                                }
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const StartRecording()));
-                              },
-                              child: Icon( // <-- Icon
-                                Icons.video_camera_back_sharp,
-                                size: 29.0,
-                                color: Colors.white,
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                  primary: const Color(
-                                      0xff02165c),
-                                  padding: EdgeInsets.fromLTRB(16, 13, 20, 20),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  )
-                              ), // <-- Text
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding:
-                          EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                          child: Container(
-                            width: 70,
-                            height: 55,
-                            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if(disabled!){
-                                  if(state == ItemState.notSolved){
-                                    final iState = Provider.of<ButtonTimerModel>(context, listen: false);
-                                    iState.setButtonDisabled(i!, disabled!, ItemState.notSolved);
-                                    setState(() {
-                                      state = iState.getItemState(i!);
-                                      isSolved = false;
-                                    });
-                                  }
-                                  else if(state == ItemState.inProgress){
-                                    final iState = Provider.of<ButtonTimerModel>(context, listen: false);
-                                    iState.setButtonDisabled(i!, disabled!, ItemState.solved);
-                                    setState(() {
-                                      state = iState.getItemState(i!);
-                                      isSolved = false;
-                                    });
-                                  }
-                                  else if(state == ItemState.solved){
-                                    final iState = Provider.of<ButtonTimerModel>(context, listen: false);
-                                    iState.setButtonDisabled(i!, disabled!, ItemState.solved);
-                                    setState(() {
-                                      state = iState.getItemState(i!);
-                                      isSolved = true;
-                                    });
-                                  }
-                                }
+                                      // ItemState.notSolved;
+                                    }
+                                    else if(state == ItemState.inProgress){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.solved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = true;
+                                      });
 
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => CheckRecordings()));
-                              },
-                              child: Icon( // <-- Icon
-                                Icons.video_collection_sharp,
-                                size: 29.0,
-                                color: Colors.white,
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                  primary: const Color(
-                                      0xff02165c),
-                                  padding: EdgeInsets.fromLTRB(16, 13, 20, 20),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  )
-                              ), // <-- Text
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding:
-                          EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                          child: Container(
-                            width: 70,
-                            height: 55,
-                            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if(disabled!){
-                                  if(state == ItemState.notSolved){
-                                    final iState = Provider.of<ButtonTimerModel>(context, listen: false);
-                                    iState.setButtonDisabled(i!, disabled!, ItemState.notSolved);
-                                    setState(() {
-                                      state = iState.getItemState(i!);
-                                      isSolved = false;
-                                    });
-                                  }
-                                  else if(state == ItemState.inProgress){
-                                    final iState = Provider.of<ButtonTimerModel>(context, listen: false);
-                                    iState.setButtonDisabled(i!, disabled!, ItemState.solved);
-                                    setState(() {
-                                      state = iState.getItemState(i!);
-                                      isSolved = true;
-                                    });
-                                  }
-                                  else if(state == ItemState.solved){
-                                    final iState = Provider.of<ButtonTimerModel>(context, listen: false);
-                                    iState.setButtonDisabled(i!, disabled!, ItemState.solved);
-                                    setState(() {
-                                      state = iState.getItemState(i!);
-                                      isSolved = true;
-                                    });
-                                  }
-                                }
+                                      print(state);
+                                    }
+                                    else if(state == ItemState.solved){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.solved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = true;
+                                      });
 
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const GiveAlarm()));
-                              },
-                              child: Icon( // <-- Icon
-                                Icons.alarm_add_sharp,
-                                size: 33.0,
-                                color: Colors.white,
+                                    }
+                                  }
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const Track()));
+                                },
+                                child: Icon( // <-- Icon
+                                  Icons.location_searching,
+                                  size: 29.0,
+                                  color: Colors.white,
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    primary: const Color(
+                                        0xff02165c),
+                                    padding: EdgeInsets.fromLTRB(16, 13, 20, 20),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    )
+                                ), // <-- Text
                               ),
-                              style: ElevatedButton.styleFrom(
-                                  primary: const Color(
-                                      0xff02165c),
-                                  padding: EdgeInsets.fromLTRB(13.5, 12, 20, 20),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  )
-                              ), // <-- Text
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding:
-                          EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                          child: Container(
-                            width: 70,
-                            height: 55,
-                            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if(disabled!){
-                                  if(state == ItemState.notSolved){
-                                    final iState = Provider.of<ButtonTimerModel>(context, listen: false);
-                                    iState.setButtonDisabled(i!, disabled!, ItemState.notSolved);
-                                    setState(() {
-                                      state = iState.getItemState(i!);
-                                      isSolved = false;
-                                    });
-                                  }
-                                  else if(state == ItemState.inProgress){
-                                    final iState = Provider.of<ButtonTimerModel>(context, listen: false);
-                                    iState.setButtonDisabled(i!, disabled!, ItemState.solved);
-                                    setState(() {
-                                      state = iState.getItemState(i!);
-                                      isSolved = true;
-                                    });
-                                  }
-                                  else if(state == ItemState.solved){
-                                    final iState = Provider.of<ButtonTimerModel>(context, listen: false);
-                                    iState.setButtonDisabled(i!, disabled!, ItemState.solved);
-                                    setState(() {
-                                      state = iState.getItemState(i!);
-                                      isSolved = true;
-                                    });
-                                  }
-                                }
+                          Padding(
+                            padding:
+                            EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                            child: Container(
+                              width: 70,
+                              height: 55,
+                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if(disabled!){
+                                    print(state);
+                                    if(state == ItemState.notSolved){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.notSolved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = false;
+                                      });
 
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => SpeakerPage()));
-                              },
-                              child: Icon( // <-- Icon
-                                Icons.keyboard_voice_sharp,
-                                size: 34.0,
-                                color: Colors.white,
+                                      // ItemState.notSolved;
+                                    }
+                                    else if(state == ItemState.inProgress){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.solved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = true;
+                                      });
+
+                                      print(state);
+                                    }
+                                    else if(state == ItemState.solved){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.solved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = true;
+                                      });
+
+                                    }
+                                  }
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const StartRecording()));
+                                },
+                                child: Icon( // <-- Icon
+                                  Icons.video_camera_back_sharp,
+                                  size: 29.0,
+                                  color: Colors.white,
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    primary: const Color(
+                                        0xff02165c),
+                                    padding: EdgeInsets.fromLTRB(16, 13, 20, 20),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    )
+                                ), // <-- Text
                               ),
-                              style: ElevatedButton.styleFrom(
-                                  primary: const Color(
-                                      0xff02165c),
-                                  padding: EdgeInsets.fromLTRB(13.5, 10, 20, 20),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  )
-                              ), // <-- Text
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding:
-                          EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                          child: Container(
-                            width: 70,
-                            height: 55,
-                            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if(disabled!){
-                                  if(state == ItemState.notSolved){
-                                    final iState = Provider.of<ButtonTimerModel>(context, listen: false);
-                                    iState.setButtonDisabled(i!, disabled!, ItemState.notSolved);
-                                    setState(() {
-                                      state = iState.getItemState(i!);
-                                      isSolved = false;
-                                    });
+                          Padding(
+                            padding:
+                            EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                            child: Container(
+                              width: 70,
+                              height: 55,
+                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if(disabled!){
+                                    if(state == ItemState.notSolved){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.notSolved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = false;
+                                      });
+                                    }
+                                    else if(state == ItemState.inProgress){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.solved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = false;
+                                      });
+                                    }
+                                    else if(state == ItemState.solved){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.solved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = true;
+                                      });
+                                    }
                                   }
-                                  else if(state == ItemState.inProgress){
-                                    final iState = Provider.of<ButtonTimerModel>(context, listen: false);
-                                    iState.setButtonDisabled(i!, disabled!, ItemState.solved);
-                                    setState(() {
-                                      state = iState.getItemState(i!);
-                                      isSolved = true;
-                                    });
-                                  }
-                                  else if(state == ItemState.solved){
-                                    final iState = Provider.of<ButtonTimerModel>(context, listen: false);
-                                    iState.setButtonDisabled(i!, disabled!, ItemState.solved);
-                                    setState(() {
-                                      state = iState.getItemState(i!);
-                                      isSolved = true;
-                                    });
-                                  }
-                                }
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const Identify()));
-                              },
-                              child: Icon( // <-- Icon
-                                Icons.add_a_photo_sharp,
-                                size: 31.0,
-                                color: Colors.white,
+
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => CheckRecordings()));
+                                },
+                                child: Icon( // <-- Icon
+                                  Icons.video_collection_sharp,
+                                  size: 29.0,
+                                  color: Colors.white,
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    primary: const Color(
+                                        0xff02165c),
+                                    padding: EdgeInsets.fromLTRB(16, 13, 20, 20),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    )
+                                ), // <-- Text
                               ),
-                              style: ElevatedButton.styleFrom(
-                                  primary: const Color(
-                                      0xff02165c),
-                                  padding: EdgeInsets.fromLTRB(14, 11, 20, 20),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  )
-                              ), // <-- Text
                             ),
                           ),
-                        ),
-                      ]
-                  ),
-                )
-              ],
+                          Padding(
+                            padding:
+                            EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                            child: Container(
+                              width: 70,
+                              height: 55,
+                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if(disabled!){
+                                    if(state == ItemState.notSolved){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.notSolved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = false;
+                                      });
+                                    }
+                                    else if(state == ItemState.inProgress){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.solved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = true;
+                                      });
+                                    }
+                                    else if(state == ItemState.solved){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.solved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = true;
+                                      });
+                                    }
+                                  }
+
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const GiveAlarm()));
+                                },
+                                child: Icon( // <-- Icon
+                                  Icons.alarm_add_sharp,
+                                  size: 33.0,
+                                  color: Colors.white,
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    primary: const Color(
+                                        0xff02165c),
+                                    padding: EdgeInsets.fromLTRB(13.5, 12, 20, 20),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    )
+                                ), // <-- Text
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                            EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                            child: Container(
+                              width: 70,
+                              height: 55,
+                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if(disabled!){
+                                    if(state == ItemState.notSolved){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.notSolved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = false;
+                                      });
+                                    }
+                                    else if(state == ItemState.inProgress){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.solved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = true;
+                                      });
+                                    }
+                                    else if(state == ItemState.solved){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.solved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = true;
+                                      });
+                                    }
+                                  }
+
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => SpeakerPage()));
+                                },
+                                child: Icon( // <-- Icon
+                                  Icons.keyboard_voice_sharp,
+                                  size: 34.0,
+                                  color: Colors.white,
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    primary: const Color(
+                                        0xff02165c),
+                                    padding: EdgeInsets.fromLTRB(13.5, 10, 20, 20),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    )
+                                ), // <-- Text
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                            EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                            child: Container(
+                              width: 70,
+                              height: 55,
+                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if(disabled!){
+                                    if(state == ItemState.notSolved){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.notSolved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = false;
+                                      });
+                                    }
+                                    else if(state == ItemState.inProgress){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.solved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = true;
+                                      });
+                                    }
+                                    else if(state == ItemState.solved){
+                                      final iState = Provider.of<ButtonTimerModel>(context, listen: false);
+                                      iState.setButtonDisabled(i!, disabled!, ItemState.solved);
+                                      setState(() {
+                                        state = iState.getItemState(i!);
+                                        isSolved = true;
+                                      });
+                                    }
+                                  }
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const Identify()));
+                                },
+                                child: Icon( // <-- Icon
+                                  Icons.add_a_photo_sharp,
+                                  size: 31.0,
+                                  color: Colors.white,
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    primary: const Color(
+                                        0xff02165c),
+                                    padding: EdgeInsets.fromLTRB(14, 11, 20, 20),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    )
+                                ), // <-- Text
+                              ),
+                            ),
+                          ),
+                        ]
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ],

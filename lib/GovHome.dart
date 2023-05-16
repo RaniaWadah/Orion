@@ -13,6 +13,7 @@ import 'package:untitled2/GiveAlarm.dart';
 import 'package:untitled2/Identify.dart';
 import 'package:untitled2/ProvideSafetyMessage.dart';
 import 'package:untitled2/StartRecording.dart';
+import 'package:untitled2/Track.dart';
 import 'package:untitled2/ViewNotifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
@@ -25,6 +26,7 @@ class GovHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: _title,
       home: Scaffold(
         appBar: PreferredSize(
@@ -371,10 +373,40 @@ class _GovHomeWidgetState extends State<GovHomeWidget> {
                       style: TextStyle(
                           fontSize: 22, fontWeight: FontWeight.bold),
                     )),
+
                 Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(75, 20, 10, 10),
+                        padding: const EdgeInsets.fromLTRB(104, 20, 10, 10),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Track(),
+                                ));
+                          },
+                          child: const Text('Track', style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          ),
+                          style: ElevatedButton.styleFrom(primary: const Color(
+                              0xff02165c), minimumSize: Size(170, 45),
+                              padding: EdgeInsets.symmetric(horizontal: 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              )
+                          ),
+                        ),
+                      )
+                    ]
+                ),
+                Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(75, 10, 10, 10),
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.push(
@@ -492,7 +524,7 @@ class _GovHomeWidgetState extends State<GovHomeWidget> {
                 Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(110, 10, 10, 10),
+                        padding: const EdgeInsets.fromLTRB(104, 10, 10, 10),
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.push(

@@ -34,6 +34,7 @@ class _UserForgotPassWidgetState extends State<UserForgotPassWidget> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: _title,
       home: Scaffold(
         appBar: PreferredSize(

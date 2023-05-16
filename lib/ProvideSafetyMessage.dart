@@ -13,6 +13,7 @@ import 'package:untitled2/Identify.dart';
 import 'package:untitled2/StartRecording.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:untitled2/Track.dart';
 
 class SpeakerPage extends StatefulWidget {
   @override
@@ -448,143 +449,177 @@ class _SpeakerPageState extends State<SpeakerPage> {
                           ),
                           IconTheme(
                             data: IconThemeData(size: 22.0, color: Colors.white),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
-                                  child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                          EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                                          child: Container(
-                                            width: 90,
-                                            height: 55,
-                                            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) => const StartRecording()));
-                                              },
-                                              child: Icon( // <-- Icon
-                                                Icons.video_camera_back_sharp,
-                                                size: 30.0,
-                                                color: Colors.white,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
+                                    child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Padding(
+                                            padding:
+                                            EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                                            child: Container(
+                                              width: 90,
+                                              height: 55,
+                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) => const Track()));
+                                                },
+                                                child: Icon( // <-- Icon
+                                                  Icons.location_searching,
+                                                  size: 30.0,
+                                                  color: Colors.white,
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                    primary: const Color(
+                                                        0xff02165c),
+                                                    padding: EdgeInsets.fromLTRB(20, 13, 20, 20),
+                                                    // padding: EdgeInsets.symmetric(horizontal: 50),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(20),
+                                                    )
+                                                ), // <-- Text
                                               ),
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: const Color(
-                                                      0xff02165c),
-                                                  padding: EdgeInsets.fromLTRB(20, 13, 20, 20),
-                                                  // padding: EdgeInsets.symmetric(horizontal: 50),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(20),
-                                                  )
-                                              ), // <-- Text
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                          EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                                          child: Container(
-                                            width: 90,
-                                            height: 55,
-                                            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) => CheckRecordings()));
-                                              },
-                                              child: Icon( // <-- Icon
-                                                Icons.video_collection_sharp,
-                                                size: 30.0,
-                                                color: Colors.white,
+                                          Padding(
+                                            padding:
+                                            EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                                            child: Container(
+                                              width: 90,
+                                              height: 55,
+                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) => const StartRecording()));
+                                                },
+                                                child: Icon( // <-- Icon
+                                                  Icons.video_camera_back_sharp,
+                                                  size: 30.0,
+                                                  color: Colors.white,
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                    primary: const Color(
+                                                        0xff02165c),
+                                                    padding: EdgeInsets.fromLTRB(20, 13, 20, 20),
+                                                    // padding: EdgeInsets.symmetric(horizontal: 50),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(20),
+                                                    )
+                                                ), // <-- Text
                                               ),
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: const Color(
-                                                      0xff02165c),
-                                                  padding: EdgeInsets.fromLTRB(20, 13, 20, 20),
-                                                  // padding: EdgeInsets.symmetric(horizontal: 50),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(20),
-                                                  )
-                                              ), // <-- Text
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                          EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                                          child: Container(
-                                            width: 90,
-                                            height: 55,
-                                            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) => const GiveAlarm()));
-                                              },
-                                              child: Icon( // <-- Icon
-                                                Icons.alarm_add_sharp,
-                                                size: 35.0,
-                                                color: Colors.white,
+                                          Padding(
+                                            padding:
+                                            EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                                            child: Container(
+                                              width: 90,
+                                              height: 55,
+                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) => CheckRecordings()));
+                                                },
+                                                child: Icon( // <-- Icon
+                                                  Icons.video_collection_sharp,
+                                                  size: 30.0,
+                                                  color: Colors.white,
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                    primary: const Color(
+                                                        0xff02165c),
+                                                    padding: EdgeInsets.fromLTRB(20, 13, 20, 20),
+                                                    // padding: EdgeInsets.symmetric(horizontal: 50),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(20),
+                                                    )
+                                                ), // <-- Text
                                               ),
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: const Color(
-                                                      0xff02165c),
-                                                  padding: EdgeInsets.fromLTRB(20, 11, 20, 20),
-                                                  // padding: EdgeInsets.symmetric(horizontal: 50),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(20),
-                                                  )
-                                              ), // <-- Text
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                          EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                                          child: Container(
-                                            width: 90,
-                                            height: 55,
-                                            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) => const Identify()));
-                                              },
-                                              child: Icon( // <-- Icon
-                                                Icons.add_a_photo_sharp,
-                                                size: 30.0,
-                                                color: Colors.white,
+                                          Padding(
+                                            padding:
+                                            EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                                            child: Container(
+                                              width: 90,
+                                              height: 55,
+                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) => const GiveAlarm()));
+                                                },
+                                                child: Icon( // <-- Icon
+                                                  Icons.alarm_add_sharp,
+                                                  size: 35.0,
+                                                  color: Colors.white,
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                    primary: const Color(
+                                                        0xff02165c),
+                                                    padding: EdgeInsets.fromLTRB(20, 11, 20, 20),
+                                                    // padding: EdgeInsets.symmetric(horizontal: 50),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(20),
+                                                    )
+                                                ), // <-- Text
                                               ),
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: const Color(
-                                                      0xff02165c),
-                                                  padding: EdgeInsets.fromLTRB(20, 13, 20, 20),
-                                                  // padding: EdgeInsets.symmetric(horizontal: 50),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(20),
-                                                  )
-                                              ), // <-- Text
                                             ),
                                           ),
-                                        ),
-                                      ]
-                                  ),
+                                          Padding(
+                                            padding:
+                                            EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                                            child: Container(
+                                              width: 90,
+                                              height: 55,
+                                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) => const Identify()));
+                                                },
+                                                child: Icon( // <-- Icon
+                                                  Icons.add_a_photo_sharp,
+                                                  size: 30.0,
+                                                  color: Colors.white,
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                    primary: const Color(
+                                                        0xff02165c),
+                                                    padding: EdgeInsets.fromLTRB(20, 13, 20, 20),
+                                                    // padding: EdgeInsets.symmetric(horizontal: 50),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(20),
+                                                    )
+                                                ), // <-- Text
+                                              ),
+                                            ),
+                                          ),
+                                        ]
+                                    ),
 
-                                )
-                              ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ],

@@ -13,9 +13,9 @@ import 'package:untitled2/firebase_config.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:untitled2/services/NotificationService.dart';
-import 'package:dcdg/dcdg.dart';
 
 Future<void> backgroundHandler(RemoteMessage message) async{
+
   await Firebase.initializeApp();
   print('Handling a background message ${message.messageId}');
   print(message.data);

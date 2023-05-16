@@ -21,16 +21,21 @@ import 'package:flutter_facebook_auth_web/flutter_facebook_auth_web.dart';
 import 'package:flutter_localization/flutter_localization_web.dart';
 import 'package:flutter_sound_web/flutter_sound_web.dart';
 import 'package:flutter_tts/flutter_tts_web.dart';
+import 'package:fluttertoast/fluttertoast_web.dart';
 import 'package:geolocator_web/geolocator_web.dart';
 import 'package:google_sign_in_web/google_sign_in_web.dart';
+import 'package:image_cropper_for_web/image_cropper_for_web.dart';
 import 'package:image_picker_for_web/image_picker_for_web.dart';
 import 'package:just_audio_web/just_audio_web.dart';
+import 'package:libphonenumber_web/libphonenumber_web.dart';
 import 'package:location_web/location_web.dart';
 import 'package:shared_preferences_web/shared_preferences_web.dart';
 import 'package:sign_in_with_apple_web/sign_in_with_apple_web.dart';
 import 'package:speech_to_text/speech_to_text_web.dart';
 import 'package:text_to_speech_web/text_to_speech_web.dart';
+import 'package:url_launcher_web/url_launcher_web.dart';
 import 'package:video_player_web/video_player_web.dart';
+import 'package:wakelock_web/wakelock_web.dart';
 
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
@@ -51,15 +56,20 @@ void registerPlugins(Registrar registrar) {
   FlutterLocalizationWeb.registerWith(registrar);
   FlutterSoundPlugin.registerWith(registrar);
   FlutterTtsPlugin.registerWith(registrar);
+  FluttertoastWebPlugin.registerWith(registrar);
   GeolocatorPlugin.registerWith(registrar);
   GoogleSignInPlugin.registerWith(registrar);
+  ImageCropperPlugin.registerWith(registrar);
   ImagePickerPlugin.registerWith(registrar);
   JustAudioPlugin.registerWith(registrar);
+  LibPhoneNumberPlugin.registerWith(registrar);
   LocationWebPlugin.registerWith(registrar);
   SharedPreferencesPlugin.registerWith(registrar);
   SignInWithApplePlugin.registerWith(registrar);
   SpeechToTextPlugin.registerWith(registrar);
   TextToSpeechWeb.registerWith(registrar);
+  UrlLauncherPlugin.registerWith(registrar);
   VideoPlayerPlugin.registerWith(registrar);
+  WakelockWeb.registerWith(registrar);
   registrar.registerMessageHandler();
 }

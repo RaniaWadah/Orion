@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'Model/model.dart';
 import 'package:untitled2/UserLogin.dart';
 
@@ -18,6 +19,7 @@ class EditProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       navigatorKey : navigatorKey,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -55,6 +57,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   bool _isVisible = true;
   final firestore = FirebaseFirestore.instance;
   String initialCountry = 'KW';
+  PhoneNumber number = PhoneNumber(isoCode: 'KW');
 
   bool isEmailValid(String email) {
     return RegExp(

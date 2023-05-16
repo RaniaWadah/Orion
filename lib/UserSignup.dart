@@ -6,6 +6,7 @@ import 'package:untitled2/UserLogin.dart';
 import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
@@ -17,6 +18,7 @@ class UserSignup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       navigatorKey : navigatorKey,
       title: _title,
       home: Scaffold(
@@ -80,6 +82,7 @@ class _UserSignupWidgetState extends State<UserSignupWidget> {
   late CollectionReference userRef;
   final firestore = FirebaseFirestore.instance;
   String initialCountry = 'KW';
+  PhoneNumber number = PhoneNumber(isoCode: 'KW');
   bool _checkbox = false;
 
   validateMobile(String value) {
@@ -575,6 +578,13 @@ class _UserSignupWidgetState extends State<UserSignupWidget> {
       );
     }
     navigatorKey.currentState!.popUntil((route) => route.isFirst);
+  }
+
+  void getPhoneNumber(String phoneNumber) async {
+    PhoneNumber number = await PhoneNumber.getRegionInfoFromPhoneNumber(phoneNumber, 'KW');
+    setState(() {
+      this.number = number;
+    });
   }
 
   void termsAndConditions(Map<String, String> users){
